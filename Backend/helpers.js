@@ -18,7 +18,28 @@ const createValidator = async (username, password) => {
     if (password.length < 6) throw {statusCode: 400, error: "Password should be at least 6 characters long"};
 };
      
+const idValidator = async (id) => {
+    
+    // Error Handling for id
+
+    if (!id){ 
+        throw 'Id cannot be empty';
+    }
+    if (typeof id !== "string"){ 
+        throw 'Id must be a string';
+    }
+    if (id.length === 0 || id.trim().length === 0){
+        throw 'Id cannot be an empty string or just spaces';
+    }
+
+    id = id.trim();
+  
+    if (!ObjectId.isValid(id)){ 
+        throw 'Invalid ID';
+    }
+};
 
 module.exports = {
-    createValidator
+    createValidator,
+    idValidator,
   };
