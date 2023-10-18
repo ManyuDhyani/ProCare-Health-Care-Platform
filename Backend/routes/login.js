@@ -1,82 +1,80 @@
 //require express, express router and bcrypt as shown in lecture code
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const data = require('../data');
+const data = require("../data");
 const usersData = data.users;
-const validationFunc = require('../helpers');
+const validationFunc = require("../helpers");
 
-router
-  .route('/')
-  .get(async (req, res) => {
-    //code here for GET
-    if (!req.session.login){
-      return res.render("userLogin", {title: "Login"});
+// router.route("/").get(async (req, res) => {
+//   //code here for GET
+//   if (!req.session.login) {
+//     return res.render("userLogin", { title: "Login" });
+//   }
+//   res.redirect("/protected");
+// });
+
+router.route("/register").post(async (req, res) => {
+  //code here for POST
+  // console.log(req.body);
+  let registerData = req.body;
+  let { email, password, phoneNumber } = registerData;
+  try {
+    // await validationFunc.createValidator(usernameInput, passwordInput);
+    let registerationStatus = await usersData.createUser(
+      email,
+      password,
+      phoneNumber
+    );
+    // console.log(registerationStatus);
+    if (
+      registerationStatus.insertedUser &&
+      registerationStatus.insertedUser === true
+    ) {
+      res.json({ message: "Registered" });
+    } else {
+      res.json({ message: "email already exists" });
     }
-    res.redirect("/protected");
-  })
+  } catch (e) {
+    res.json(e);
+  }
+});
 
-router
-  .route('/register')
-  .get(async (req, res) => {
-    //code here for GET
-    if (!req.session.login){
-      return res.render("userRegister", {title: "Register"});
+router.route("/login").post(async (req, res) => {
+  //code here for POST
+  let loginData = req.body;
+  let { email, password } = loginData;
+  // console.log(req.session);
+  try {
+    // await validationFunc.createValidator(usernameInput, passwordInput);
+    let loginDetails = await usersData.checkUser(email, password);
+    // console.log(loginDetails.authenticatedUser);
+    if (loginDetails.authenticatedUser) {
+      console.log("here");
+      req.session.login = true;
+      req.session.username = email;
+      // console.log(req.session);
     }
-    res.redirect("/protected")
-  })
-  .post(async (req, res) => {
-    //code here for POST
-    let registerData = req.body;
-    let {usernameInput, passwordInput} = registerData;
-    try {
-      await validationFunc.createValidator(usernameInput, passwordInput);
-      let registerationStatus = await usersData.createUser(usernameInput, passwordInput);
-      if (registerationStatus.insertedUser === true) {
-        res.redirect("/");
-      }
-    } catch (e) {
-      if (e.statusCode) {
-        res.status(e.statusCode).render("userRegister", {title: "Register", errors: true, error: e.error});
-      } else {
-        res.status(500).json("Internal Server Error");
-      }
-    }
-  })
- 
-router
-  .route('/login')
-  .post(async (req, res) => {
-    //code here for POST
-    let loginData = req.body;
-    let {usernameInput, passwordInput} = loginData;
-    try {
-      await validationFunc.createValidator(usernameInput, passwordInput);
-      let loginDetails = await usersData.checkUser(usernameInput, passwordInput);
-      req.session.login = loginDetails;
-      req.session.username = usernameInput;
-      res.redirect("/protected");
-    } catch (e) {
-      if (e.statusCode) {
-        res.status(e.statusCode).render("userLogin", {title: "Login", errors: true, error: e.error});
-      } else {
-        res.status(500).json("Internal Server Error");
-      }
-    }
-  })
 
-router
-  .route('/protected')
-  .get(async (req, res) => {
-    //code here for GET
-    res.render("private", {title: "Protected Page", username: req.session.username, timestamp: new Date().toUTCString()})
-  })
+    // res.redirect("/protected");
+    res.json(loginDetails);
+  } catch (e) {
+    res.json(e);
+  }
+});
 
-router
-  .route('/logout')
-  .get(async (req, res) => {
-    //code here for GET
-    req.session.destroy();
-    res.render("logout", {title: "Logged Out"});
-  })
+router.route("/protected").get(async (req, res) => {
+  //code here for GET
+  res.render("private", {
+    title: "Protected Page",
+    username: req.session.username,
+    timestamp: new Date().toUTCString(),
+  });
+});
 
-  module.exports = router;
+router.route("/logout").get(async (req, res) => {
+  //code here for GET
+  req.session.destroy();
+  res.render("logout", { title: "Logged Out" });
+});
+
+module.exports = router;
