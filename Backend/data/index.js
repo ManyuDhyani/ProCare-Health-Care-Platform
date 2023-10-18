@@ -1,5 +1,7 @@
-const users = require('./users')
+const users = require("./users");
+const inventory = require("./inventory");
 
 module.exports = {
-    users: users
-}
+  users: users,
+  inventory,
+};
