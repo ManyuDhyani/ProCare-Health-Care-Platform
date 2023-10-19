@@ -83,8 +83,29 @@ const getPatientByID = async (patiendID) => {
   fetchPatient._id = fetchPatient._id.toString();
   return fetchPatient;
 };
+
+//Get all patients who have familyID in familyMembers array
+const getPatientByFamilyMember = async (familyID) => {
+  familyID = familyID.trim();
+  console.log(familyID);
+  const patientsCollections = await patients();
+  const patientsWithFamilyMember = await patientsCollections.find({ familyMembers: familyID }).toArray();
+    return patientsWithFamilyMember;
+};
+
+//Get all patients who have staff member in StaffMembers array
+const getPatientByStaffMember = async (StaffMemberID) => {
+  StaffMemberID = StaffMemberID.trim();
+  console.log(StaffMemberID);
+  const patientsCollections = await patients();
+  const patientsWithStaffMember = await patientsCollections.find({ StaffMembers: StaffMemberID }).toArray();
+  return patientsWithStaffMember;
+};
+
 module.exports = {
   createPatient,
   getAllPatients,
   getPatientByID,
+  getPatientByFamilyMember,
+  getPatientByStaffMember
 };
