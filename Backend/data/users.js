@@ -25,8 +25,9 @@ const createUser = async (email, password, phoneNumber) => {
     password: encryptedPassword,
     phoneNumber: phoneNumber,
     active: false,
-    type: "yet to be given",
+    type: undefined,
     loggedIn: false,
+    patients: [],
   };
 
   let insertUser = await userCollection.insertOne(newUser);
@@ -57,7 +58,51 @@ const checkUser = async (email, password) => {
   return { authenticatedUser: true };
 };
 
+const getStaffMemberByPatientId = async (patientId) => {
+  patientId = patientId.trim();
+
+  const userCollections = await userCollection();
+  let getStaffMember = await userCollections
+    .find({
+      patients: { $elemMatch: { patientID } },
+      type: "StaffMember",
+    })
+    .toArray();
+
+  if (getStaffMember.length === 0) {
+    throw { statusCode: 400, error: "No staff Member " };
+  }
+  getStaffMember.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getStaffMember;
+};
+
+const getFamilyMemberByParentId = async (patientId) => {
+  patientId = patientId.trim();
+
+  const userCollections = await userCollection();
+  let getFamilyMember = await userCollections
+    .find({
+      patients: { $elemMatch: { patientID } },
+      type: "FamilyMember",
+    })
+    .toArray();
+
+  if (getFamilyMember.length === 0) {
+    throw { statusCode: 400, error: "No family Member" };
+  }
+  getFamilyMember.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getFamilyMember;
+};
+
 module.exports = {
   createUser,
   checkUser,
+  getStaffMemberByPatientId,
+  getFamilyMemberByParentId,
 };
