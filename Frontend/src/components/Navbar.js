@@ -9,12 +9,13 @@ import Button from "@mui/material/Button";
 export default function Navbar() {
   const location = useLocation();
   const name = location.state && location.state.user.email;
+  let uname = name && name.split("@")[0];
   const inventory_flag = location.state && location.state.user.type;
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div">
-          Hello {name}
+          Hello {uname}
         </Typography>
         <div style={{ flexGrow: 1 }}></div>
         {inventory_flag === "staff" && (
@@ -22,7 +23,7 @@ export default function Navbar() {
             Inventory
           </Link>
         )}
-        {name !== null && (
+        {uname !== null && (
           <Button href="/" color="inherit">
             LOGOUT
           </Button>

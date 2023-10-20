@@ -30,6 +30,7 @@ function preventDefault(event) {
 export default function Dashboard() {
   const location = useLocation();
   let user = location.state && location.state.user;
+  console.log("Printing User");
   console.log(user);
 
   return (
@@ -51,6 +52,7 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <h1>Patients</h1>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
@@ -63,7 +65,7 @@ export default function Dashboard() {
                     overflow: "auto",
                   }}
                 >
-                  <Patients />
+                  <Patients userObj={user} />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -82,6 +84,7 @@ export default function Dashboard() {
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
+                <h1>Inventory</h1>
                 <Paper
                   sx={{
                     p: 2,
