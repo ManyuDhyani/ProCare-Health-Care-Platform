@@ -6,16 +6,40 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 
-export default function Patients() {
+export default function Patients(props) {
   const [rows, setRows] = React.useState([]); // Use state to store the patient data
 
   // Function to fetch patient data and set it in the state
   const getPatientdata = async () => {
     try {
+      let user = props.userObj;
+      console.log("Printing User Objee");
+      console.log(user);
       const response = await axios.get("http://localhost:8000/patient/");
       const patients = response.data;
+      console.log("Printing patients");
       console.log(patients);
-      setRows(patients);
+      console.log("Id to be checked");
+      console.log(user.userID);
+      console.log("Type of the user");
+      console.log(user.type);
+
+      //Check the type of the User
+      let FilteredData;
+      if (user.type === "F") {
+        FilteredData = patients.filter((item) =>
+          item.newObj.familyMembers.includes(user.userID)
+        );
+      } else if (user.type === "S") {
+        FilteredData = patients.filter((item) =>
+          item.newObj.StaffMembers.includes(user.userID)
+        );
+      }
+
+      console.log("Printing Filtered Data");
+      console.log(FilteredData);
+      console.log(patients);
+      setRows(FilteredData);
       console.log("rows", rows);
     } catch (error) {
       console.error("Error fetching patient data:", error);
