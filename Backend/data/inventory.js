@@ -11,17 +11,17 @@ const createMedicine = async (
   threshold,
   remark
 ) => {
-  await validationFunc.createMedicineValidator(
-    title,
-    plot,
-    genres,
-    rating,
-    studio,
-    director,
-    castMembers,
-    dateReleased,
-    runtime
-  );
+  // await validationFunc.createMedicineValidator(
+  //   title,
+  //   plot,
+  //   genres,
+  //   rating,
+  //   studio,
+  //   director,
+  //   castMembers,
+  //   dateReleased,
+  //   runtime
+  // );
 
   // Cleaning Data: Triming input for storage
   name = name.trim();
@@ -59,7 +59,7 @@ const getAllMedicines = async () => {
   let inventoryCollection = await inventory();
   let medList = await inventoryCollection.find({}).toArray();
   if (medList.length === 0) {
-    throw { statusCode: 404, error: "No medication in the Database" };
+    return { message: "No Medicines" };
   }
   medList.forEach((element) => {
     element._id = element._id.toString();

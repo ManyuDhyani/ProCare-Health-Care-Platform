@@ -6,11 +6,13 @@ import "../App.css";
 
 export default function Inventory() {
   const [data, setData] = useState(0);
-
+  const [nullmed, setNullmed] = useState(false);
   const getdata = async () => {
+    setNullmed(false);
     let inv = await axios.get("http://localhost:8000/inventory");
-
-    setData(inv.data);
+    console.log(inv.data);
+    if (inv.data.message == "No Medicines") setNullmed(true);
+    else setData(inv.data);
     return inv;
   };
   useEffect(() => {
