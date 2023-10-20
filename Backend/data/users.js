@@ -54,8 +54,12 @@ const checkUser = async (email, password) => {
   let comparePswd = await bcrypt.compare(password, userExist.password);
   if (!comparePswd)
     return { error: "Either the username or password is invalid" };
-  let user = { email: userExist.email, type: userExist.type}
-  return { authenticatedUser: true, user : user };
+  let user = {
+    email: userExist.email,
+    type: userExist.type,
+    userID: userExist._id.toString(),
+  };
+  return { authenticatedUser: true, user: user };
 };
 
 const getStaffMemberByPatientId = async (patientId) => {
