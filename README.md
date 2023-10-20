@@ -36,3 +36,8 @@ By default it will run at http://localhost:3000/
 
 Troubleshooting:
 Main error can be related to library compatibility with node version. For that we want to mention our project is build on node version: v16.17.0
+
+
+## Database Schema for ProCare
+
+![](database_Schema.png)
