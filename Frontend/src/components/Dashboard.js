@@ -79,24 +79,26 @@ export default function Dashboard() {
                     overflow: "auto",
                   }}
                 >
-                  <Inventory />
+                  {/* <Inventory /> */}
                 </Paper>
               </Grid>
               {/* Recent Orders */}
-              <Grid item xs={12}>
-                <h1>Inventory</h1>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 350,
-                    overflow: "auto",
-                  }}
-                >
-                  <Inventory />
-                </Paper>
-              </Grid>
+              {user.type == "S" && (
+                <Grid item xs={12}>
+                  <h1>Inventory</h1>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 350,
+                      overflow: "auto",
+                    }}
+                  >
+                    <Inventory />
+                  </Paper>
+                </Grid>
+              )}
             </Grid>
           </Container>
         </Box>
