@@ -1,4 +1,4 @@
-const mongoCollections = require("../config/mongoCollections");
+const mongoCollections = require("../Config/mongoCollections");
 const validationFunc = require("../helpers");
 const inventory = mongoCollections.inventory;
 let { ObjectId } = require("mongodb");
@@ -11,18 +11,6 @@ const createMedicine = async (
   threshold,
   remark
 ) => {
-  // await validationFunc.createMedicineValidator(
-  //   title,
-  //   plot,
-  //   genres,
-  //   rating,
-  //   studio,
-  //   director,
-  //   castMembers,
-  //   dateReleased,
-  //   runtime
-  // );
-
   // Cleaning Data: Triming input for storage
   name = name.trim();
   mg = mg.trim();
