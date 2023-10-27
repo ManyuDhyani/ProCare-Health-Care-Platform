@@ -104,9 +104,26 @@ const getFamilyMemberByParentId = async (patientId) => {
   return getFamilyMember;
 };
 
+const getAllUsers = async () => {
+  const userCollections = await userCollection();
+  let getUsers = await userCollections
+    .find({})
+    .toArray();
+
+  if (getUsers.length === 0) {
+    throw { statusCode: 400, error: "No Users in Database" };
+  }
+  getUsers.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getUsers;
+};
+
 module.exports = {
   createUser,
   checkUser,
   getStaffMemberByPatientId,
   getFamilyMemberByParentId,
+  getAllUsers,
 };
