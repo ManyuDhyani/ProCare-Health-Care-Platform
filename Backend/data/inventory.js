@@ -113,5 +113,6 @@ module.exports = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
-  getMedicineLowinThreshold
+  getMedicineLowinThreshold,
+  getMedicineAboutToExp
 };
