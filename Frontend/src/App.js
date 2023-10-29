@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
 import AboutUs from "./components/AboutUs";
+import AddMedicine from "./components/AddMedicine";
 
 function App() {
   return (
