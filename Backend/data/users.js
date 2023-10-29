@@ -25,8 +25,9 @@ const createUser = async (email, password, phoneNumber) => {
     password: encryptedPassword,
     phoneNumber: phoneNumber,
     active: false,
-    type: "yet to be given",
+    type: undefined,
     loggedIn: false,
+    patients: [],
   };
 
   let insertUser = await userCollection.insertOne(newUser);
@@ -53,11 +54,76 @@ const checkUser = async (email, password) => {
   let comparePswd = await bcrypt.compare(password, userExist.password);
   if (!comparePswd)
     return { error: "Either the username or password is invalid" };
+  let user = {
+    email: userExist.email,
+    type: userExist.type,
+    userID: userExist._id.toString(),
+  };
+  return { authenticatedUser: true, user: user };
+};
 
-  return { authenticatedUser: true };
+const getStaffMemberByPatientId = async (patientId) => {
+  patientId = patientId.trim();
+
+  const userCollections = await userCollection();
+  let getStaffMember = await userCollections
+    .find({
+      patients: { $elemMatch: { patientID } },
+      type: "StaffMember",
+    })
+    .toArray();
+
+  if (getStaffMember.length === 0) {
+    throw { statusCode: 400, error: "No staff Member " };
+  }
+  getStaffMember.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getStaffMember;
+};
+
+const getFamilyMemberByParentId = async (patientId) => {
+  patientId = patientId.trim();
+
+  const userCollections = await userCollection();
+  let getFamilyMember = await userCollections
+    .find({
+      patients: { $elemMatch: { patientID } },
+      type: "FamilyMember",
+    })
+    .toArray();
+
+  if (getFamilyMember.length === 0) {
+    throw { statusCode: 400, error: "No family Member" };
+  }
+  getFamilyMember.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getFamilyMember;
+};
+
+const getAllUsers = async () => {
+  const userCollections = await userCollection();
+  let getUsers = await userCollections
+    .find({})
+    .toArray();
+
+  if (getUsers.length === 0) {
+    throw { statusCode: 400, error: "No Users in Database" };
+  }
+  getUsers.forEach((elem) => {
+    elem._id = elem._id.toString();
+  });
+
+  return getUsers;
 };
 
 module.exports = {
   createUser,
   checkUser,
+  getStaffMemberByPatientId,
+  getFamilyMemberByParentId,
+  getAllUsers,
 };

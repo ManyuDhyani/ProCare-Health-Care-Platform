@@ -11,18 +11,6 @@ const createMedicine = async (
   threshold,
   remark
 ) => {
-  // await validationFunc.createMedicineValidator(
-  //   title,
-  //   plot,
-  //   genres,
-  //   rating,
-  //   studio,
-  //   director,
-  //   castMembers,
-  //   dateReleased,
-  //   runtime
-  // );
-
   // Cleaning Data: Triming input for storage
   name = name.trim();
   mg = mg.trim();
@@ -59,7 +47,7 @@ const getAllMedicines = async () => {
   let inventoryCollection = await inventory();
   let medList = await inventoryCollection.find({}).toArray();
   if (medList.length === 0) {
-    throw { statusCode: 404, error: "No medication in the Database" };
+    return { message: "No Medicines" };
   }
   medList.forEach((element) => {
     element._id = element._id.toString();
@@ -82,8 +70,52 @@ const getMedicineById = async (medID) => {
   return result;
 };
 
+const getMedicineLowinThreshold = async () => {
+  let inventoryCollection = await inventory();
+  // Query to find medications with low stock.
+  const query = { current_stock: { $lt: "$threshold" } };
+
+  // Projecting the fields to be retrieved. Here we want all!
+  const projection = {
+    name: 1,
+    mg: 1,
+    exp_date: 1,
+    current_stock: 1,
+    threshold: 1,
+    remark: 1,
+  };
+  const result = await inventoryCollection
+    .find(query)
+    .project(projection)
+    .toArray();
+
+  return result;
+};
+
+const getMedicineAboutToExp = async () => {
+  const currentDate = new Date();
+  const expirationDateThreshold = new Date(currentDate);
+  expirationDateThreshold.setMonth(currentDate.getMonth() + 1);
+
+  let inventoryCollection = await inventory();
+  const result = await inventoryCollection.find().toArray();
+
+  const medicationsAboutToExp = result.filter((medication) => {
+    // Parse the 'exp_date' string as a date
+    const expDateParts = medication.exp_date.split("/");
+    const expDate = new Date(expDateParts[1], expDateParts[0] - 1);
+
+    // Check if the medication is expiring within one month
+    return expDate > currentDate && expDate <= expirationDateThreshold;
+  });
+
+  return medicationsAboutToExp;
+};
+
 module.exports = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
+  getMedicineLowinThreshold,
+  getMedicineAboutToExp,
 };

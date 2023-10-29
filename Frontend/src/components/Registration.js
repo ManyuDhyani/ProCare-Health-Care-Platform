@@ -72,7 +72,7 @@ const Registration = () => {
           password,
           phoneNumber,
         });
-        // console.log(response.data.message);
+        console.log(response.data.message);
         if (response.data.message === "Registered") setRedirect(true);
         else if (response.data.message === "email already exists")
           setEmailExists(true);

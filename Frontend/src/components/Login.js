@@ -18,19 +18,20 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 // import { AuthContext } from "../UserContext";
 // import { authO, provider, provider1 } from "../GoogleSignIn/congif";
 // import { signInWithPopup } from "firebase/auth";
 import google from "../Images/google.svg";
 import { style } from "@mui/system";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const Login = () => {
   const theme = createTheme({ palette: { mode: "light" } });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [notvalid, setNotValid] = useState(false);
-
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(email, password);
@@ -44,8 +45,11 @@ const Login = () => {
         setNotValid(true);
       else if (response.data.authenticatedUser === true) {
         setNotValid(false);
-
-        console.log(notvalid);
+        // console.log(response.data);
+        // console.log(notvalid);
+        // <ProtectedRoutes data={response} />;
+        localStorage.setItem("session_auth", true);
+        navigate("/dashboard", { state: { user: response.data.user } });
       }
     } catch (error) {
       console.error(error);
