@@ -47,7 +47,7 @@ const getAllMedicines = async () => {
   let inventoryCollection = await inventory();
   let medList = await inventoryCollection.find({}).toArray();
   if (medList.length === 0) {
-    return { message: "No Medicines" };
+    return { message: "No Medicines" };
   }
   medList.forEach((element) => {
     element._id = element._id.toString();
@@ -73,7 +73,7 @@ const getMedicineById = async (medID) => {
 const getMedicineLowinThreshold = async () => {
   let inventoryCollection = await inventory();
   // Query to find medications with low stock.
-  const query = { current_stock: { $lt: '$threshold' } };
+  const query = { current_stock: { $lt: "$threshold" } };
 
   // Projecting the fields to be retrieved. Here we want all!
   const projection = {
@@ -84,10 +84,13 @@ const getMedicineLowinThreshold = async () => {
     threshold: 1,
     remark: 1,
   };
-  const result = await inventoryCollection.find(query).project(projection).toArray();
+  const result = await inventoryCollection
+    .find(query)
+    .project(projection)
+    .toArray();
 
   return result;
-}
+};
 
 const getMedicineAboutToExp = async () => {
   const currentDate = new Date();
@@ -99,7 +102,7 @@ const getMedicineAboutToExp = async () => {
 
   const medicationsAboutToExp = result.filter((medication) => {
     // Parse the 'exp_date' string as a date
-    const expDateParts = medication.exp_date.split('/');
+    const expDateParts = medication.exp_date.split("/");
     const expDate = new Date(expDateParts[1], expDateParts[0] - 1);
 
     // Check if the medication is expiring within one month
@@ -107,12 +110,12 @@ const getMedicineAboutToExp = async () => {
   });
 
   return medicationsAboutToExp;
-}
+};
 
 module.exports = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
   getMedicineLowinThreshold,
-  getMedicineAboutToExp
+  getMedicineAboutToExp,
 };
