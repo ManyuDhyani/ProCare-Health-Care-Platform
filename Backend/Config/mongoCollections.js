@@ -21,4 +21,5 @@ module.exports = {
     users: getCollectionFn('users'),
     patients: getCollectionFn('patients'),
     inventory: getCollectionFn('inventory'),
+    feedback: getCollectionFn('feedback'),
 };
