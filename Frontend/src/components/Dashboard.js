@@ -83,7 +83,7 @@ export default function Dashboard() {
                       }}
                     >
                       {/* <Inventory /> */}
-                      <Feedback />
+                      <Feedback UID={user.userID} />
                     </Paper>
                   </Grid>
                 ))}
