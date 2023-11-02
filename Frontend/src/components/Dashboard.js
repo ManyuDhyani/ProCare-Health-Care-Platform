@@ -30,8 +30,8 @@ function preventDefault(event) {
 export default function Dashboard() {
   const location = useLocation();
   let user = location.state && location.state.user;
-  console.log("Printing User");
-  console.log(user);
+  // console.log("Printing User");
+  // console.log(user);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -52,7 +52,7 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <h1>Patients</h1>
+            <h1>{user.type == "A" && "All "}Patients</h1>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
@@ -69,36 +69,45 @@ export default function Dashboard() {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                    overflow: "auto",
-                  }}
-                >
-                  {/* <Inventory /> */}
-                </Paper>
-              </Grid>
+              {user.type == "S" ||
+                (user.type == "F" && (
+                  <Grid item xs={12} md={4} lg={3}>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        height: 240,
+                        overflow: "auto",
+                      }}
+                    >
+                      {/* <Inventory /> */}
+                    </Paper>
+                  </Grid>
+                ))}
+
               {/* Recent Orders */}
-              {user.type == "S" && (
-                <Grid item xs={12}>
-                  <h1>Inventory</h1>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 350,
-                      overflow: "auto",
-                    }}
-                  >
-                    <Inventory />
-                  </Paper>
-                </Grid>
-              )}
+              {user.type == "S" ||
+                (user.type == "A" && (
+                  <Grid item xs={12}>
+                    <h1>{user.type == "A" && "All "}Inventory</h1>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        height: 230,
+                        overflow: "auto",
+                      }}
+                    >
+                      <Inventory props={{ user_type: user.type }} />
+                      {user.type == "F" ||
+                        (user.type == "S" && (
+                          <Link href="/inventory">Go to Inventory</Link>
+                        ))}
+                    </Paper>
+                  </Grid>
+                ))}
             </Grid>
           </Container>
         </Box>

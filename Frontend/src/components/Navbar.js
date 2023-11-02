@@ -11,6 +11,12 @@ export default function Navbar() {
   const name = location.state && location.state.user.email;
   let uname = name && name.split("@")[0];
   const inventory_flag = location.state && location.state.user.type;
+
+  const handleLogout = () => {
+    // Clear local storage
+    localStorage.clear();
+  };
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -24,7 +30,7 @@ export default function Navbar() {
           </Link>
         )}
         {uname !== null && (
-          <Button href="/" color="inherit">
+          <Button href="/" color="inherit" onClick={handleLogout}>
             LOGOUT
           </Button>
         )}
