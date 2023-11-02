@@ -87,27 +87,26 @@ export default function Dashboard() {
                 ))}
 
               {/* Recent Orders */}
-              {user.type == "S" ||
-                (user.type == "A" && (
-                  <Grid item xs={12}>
-                    <h1>{user.type == "A" && "All "}Inventory</h1>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        height: 230,
-                        overflow: "auto",
-                      }}
-                    >
-                      <Inventory props={{ user_type: user.type }} />
-                      {user.type == "F" ||
-                        (user.type == "S" && (
+              {(user.type == "S" || user.type == "A") && (
+                <Grid item xs={12}>
+                  <h1>{user.type == "A" && "All "}Inventory</h1>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 230,
+                      overflow: "auto",
+                    }}
+                  >
+                    <Inventory props={{ user_type: user.type }} />
+                    {/* {user.type == "S" ||
+                        (user.type == "A" && (
                           <Link href="/inventory">Go to Inventory</Link>
-                        ))}
-                    </Paper>
-                  </Grid>
-                ))}
+                        ))} */}
+                  </Paper>
+                </Grid>
+              )}
             </Grid>
           </Container>
         </Box>
