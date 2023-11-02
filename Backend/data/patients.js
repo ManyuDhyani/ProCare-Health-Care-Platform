@@ -31,16 +31,13 @@ const createPatient = async (
   };
   const patientsCollections = await patients();
   //Insert the record
-  console.log(1);
   let insertPatient = await patientsCollections.insertOne({ newObj });
   if (!insertPatient.acknowledged || insertPatient.insertedCount === 0) {
     throw { statusCode: 500, error: "The patient was not added" };
   }
-  console.log(2);
   let fetchAgain = await patientsCollections.findOne({
     _id: insertPatient.insertedId,
   });
-  console.log(3);
   if (!fetchAgain) {
     throw { statusCode: 404, error: `No patient with the id:- ${id}` };
   }
@@ -49,11 +46,8 @@ const createPatient = async (
 };
 //Get All patients
 const getAllPatients = async () => {
-  console.log("Inside all patients");
   const patientsCollections = await patients();
-  console.log(31);
   let allPatients = await patientsCollections.find({}).toArray();
-  console.log(32);
   if (allPatients.length === 0) {
     throw { statusCode: 404, error: "No Patient in the Database" };
   }
@@ -65,7 +59,6 @@ const getAllPatients = async () => {
 //Get a patient by ID
 const getPatientByID = async (patiendID) => {
   patiendID = patiendID.trim();
-  console.log(patiendID);
   const patientsCollections = await patients();
   if (!ObjectId.isValid(patiendID)) {
     throw { statusCode: 400, error: "Patient ID is not a valid object ID" };
@@ -87,7 +80,6 @@ const getPatientByID = async (patiendID) => {
 //Get all patients who have familyID in familyMembers array
 const getPatientByFamilyMember = async (familyID) => {
   familyID = familyID.trim();
-  console.log(familyID);
   const patientsCollections = await patients();
   const patientsWithFamilyMember = await patientsCollections.find({ familyMembers: familyID }).toArray();
     return patientsWithFamilyMember;
@@ -96,7 +88,6 @@ const getPatientByFamilyMember = async (familyID) => {
 //Get all patients who have staff member in StaffMembers array
 const getPatientByStaffMember = async (StaffMemberID) => {
   StaffMemberID = StaffMemberID.trim();
-  console.log(StaffMemberID);
   const patientsCollections = await patients();
   const patientsWithStaffMember = await patientsCollections.find({ StaffMembers: StaffMemberID }).toArray();
   return patientsWithStaffMember;
