@@ -18,7 +18,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/addInventory" element={<AddMedicine />} />
         </Route>
       </Routes>
     </Router>

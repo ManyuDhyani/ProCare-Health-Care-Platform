@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
+import AddMedicine from "./AddMedicine";
 
 export default function Navbar() {
   const location = useLocation();
@@ -24,10 +25,8 @@ export default function Navbar() {
           Hello {uname}
         </Typography>
         <div style={{ flexGrow: 1 }}></div>
-        {inventory_flag === "staff" && (
-          <Link href="/inventory" color="inherit">
-            Inventory
-          </Link>
+        {(inventory_flag === "S" || inventory_flag === "A") && (
+          <AddMedicine>AddMedicine</AddMedicine>
         )}
         {uname !== null && (
           <Button href="/" color="inherit" onClick={handleLogout}>
