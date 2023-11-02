@@ -105,7 +105,7 @@ const getFamilyMemberByParentId = async (patientId) => {
 };
 
 const getAllUsers = async () => {
-  const userCollections = await userCollection();
+  const userCollections = await user_collection();
   let getUsers = await userCollections
     .find({})
     .toArray();
