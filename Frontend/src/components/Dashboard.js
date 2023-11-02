@@ -20,6 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useLocation } from "react-router-dom";
 import Inventory from "./Inventory";
 import Patients from "./Patients";
+import Feedback from "./Feedback";
 
 const defaultTheme = createTheme();
 
@@ -82,6 +83,7 @@ export default function Dashboard() {
                       }}
                     >
                       {/* <Inventory /> */}
+                      <Feedback />
                     </Paper>
                   </Grid>
                 ))}
