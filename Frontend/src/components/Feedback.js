@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function Feedback() {
-  const [feedback, setFeedback] = useState("");
+export default function Feedback(props) {
+  const [message, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleFeedbackChange = (e) => {
@@ -13,6 +13,11 @@ export default function Feedback() {
     e.preventDefault();
     // You can perform actions with the feedback here, e.g., sending it to a server
     setSubmitted(true);
+
+    axios.post("http://localhost:8000/feedback", {
+      famMebId: props.UID,
+      message,
+    });
   };
 
   return (
@@ -26,7 +31,7 @@ export default function Feedback() {
             <label>Please share your exprience</label>
             <textarea
               rows="4"
-              value={feedback}
+              value={message}
               onChange={handleFeedbackChange}
               className="form-control"
               required
