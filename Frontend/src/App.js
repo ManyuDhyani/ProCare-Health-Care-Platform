@@ -18,7 +18,7 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/inventory" element={<Inventory />} />
-        </Route>
+        </Route>
       </Routes>
     </Router>
   );

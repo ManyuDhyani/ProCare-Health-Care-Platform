@@ -17,12 +17,12 @@ export default function Patients(props) {
       console.log(user);
       const response = await axios.get("http://localhost:8000/patient/");
       const patients = response.data;
-      console.log("Printing patients");
-      console.log(patients);
-      console.log("Id to be checked");
-      console.log(user.userID);
-      console.log("Type of the user");
-      console.log(user.type);
+      // console.log("Printing patients");
+      // console.log(patients);
+      // console.log("Id to be checked");
+      // console.log(user.userID);
+      // console.log("Type of the user");
+      // console.log(user.type);
 
       //Check the type of the User
       let FilteredData;
@@ -34,13 +34,15 @@ export default function Patients(props) {
         FilteredData = patients.filter((item) =>
           item.newObj.StaffMembers.includes(user.userID)
         );
+      } else if (user.type === "A") {
+        FilteredData = patients;
       }
 
-      console.log("Printing Filtered Data");
-      console.log(FilteredData);
-      console.log(patients);
+      // console.log("Printing Filtered Data");
+      // console.log(FilteredData);
+      // console.log(patients);
       setRows(FilteredData);
-      console.log("rows", rows);
+      // console.log("rows", rows);
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
