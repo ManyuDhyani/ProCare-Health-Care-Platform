@@ -12,10 +12,6 @@
 .patient {
   background-color: lightblue;
 }
-
-    color: green;
-    background-color: lightblue;
-  }
   
   .Addpatient {
     color: green;
@@ -66,10 +62,5 @@
     font-style: oblique;
     color: rgb(66, 99, 6);
     text-align: center;
-  }
-  
-  .button {
-    background-color: #2dab00
-    color: black;
   }
 
