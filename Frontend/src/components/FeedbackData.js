@@ -31,7 +31,7 @@ export default function FeedbackData() {
           {data &&
             data.map((feedback, index) => (
               <TableRow key={index}>
-                <TableCell>{index}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{feedback.feedbackMsg}</TableCell>
               </TableRow>
             ))}
