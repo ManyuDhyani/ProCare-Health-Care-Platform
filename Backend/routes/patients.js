@@ -18,16 +18,8 @@ router
     //Create new patient
     try {
       console.log("Inside Post");
-      let {
-        name,
-        dataofBirth,
-        gender,
-        diagnosis,
-        medication,
-        admissionDate,
-        familyMembers,
-        StaffMembers,
-      } = req.body;
+      let { name, dataofBirth, gender, diagnosis, medication, admissionDate } =
+        req.body;
       console.log(req.body);
       const postPatient = await patientData.createPatient(
         name,
@@ -35,9 +27,7 @@ router
         gender,
         diagnosis,
         medication,
-        admissionDate,
-        familyMembers,
-        StaffMembers
+        admissionDate
       );
       console.log("Ending call to function");
       res.json(postPatient);

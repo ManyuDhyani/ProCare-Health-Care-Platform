@@ -9,8 +9,6 @@ const createPatient = async (
   diagnosis,
   medication,
   admissionDate,
-  familyMembers,
-  StaffMembers
 ) => {
   console.log("Inside the create function");
   name = name.trim();
@@ -26,8 +24,8 @@ const createPatient = async (
     diagnosis: diagnosis,
     medication: medication,
     admissionDate: admissionDate,
-    familyMembers: familyMembers,
-    StaffMembers: StaffMembers,
+    familyMembers: [],
+    StaffMembers: [],
   };
   const patientsCollections = await patients();
   //Insert the record
@@ -39,7 +37,7 @@ const createPatient = async (
     _id: insertPatient.insertedId,
   });
   if (!fetchAgain) {
-    throw { statusCode: 404, error: `No patient with the id:- ${id}` };
+    throw { statusCode: 404, error: No patient with the id:- ${id} };
   }
   fetchAgain._id = fetchAgain._id.toString();
   return fetchAgain;
