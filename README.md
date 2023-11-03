@@ -16,6 +16,13 @@ First open terminal and change directory to Backend using cmd:
 Install all dependencies in package.json using cmd:
 >> npm install
 
+We added seed file to add some data. Still to assign user type family, staff, or admin with "F", "S" and "A" respectively we have to use mongoDB compass. Later will add functinality to admin dasboard in sprint 3. For now type command:
+>> node seed.js
+
+Also to run test file "test.js" present in backend folder, we can run it now.
+>> node test.js
+
+Now continuing with backend server:
 Note: Before Running the Express server please check for MongoDB on your system. The MongoDB should be running at port 27017.
 Now run the Express server using cmd:
 >> npm start
