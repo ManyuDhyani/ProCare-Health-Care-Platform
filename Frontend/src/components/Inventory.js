@@ -27,13 +27,7 @@ export default function Inventory(props) {
   }, []);
 
   return (
-    // <div className="Invetory-Cards">
-    //   {data &&
-    //     data.map((e) => {
-    //       console.log(e);
-    //       return <MedCard props={e} className="centerd-list"></MedCard>;
-    //     })}
-    // </div>
+  
     <React.Fragment>
       <Table size="small">
         <TableHead>

@@ -7,13 +7,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
+import styles from "../css/Addmedicine.module.css";
 
 export default function Addpatient() {
   const [open, setOpen] = useState(false);
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentmonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-  const maxDate = `${currentYear}-${currentmonth}`;
+  const currDate = (currentDate.getDate() + 1).toString().padStart(2, "0");
+  console.log(currDate);
+  const maxDate = ${currentYear}-${currDate}-${currentmonth};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,46 +26,47 @@ export default function Addpatient() {
     setOpen(false);
   };
 
-  const handlesubmit = () => {
+  const handlesubmit = (e) => {
     const name = document.getElementById("name").value;
-    const mg = document.getElementById("mg").value;
-    const exp_date = document.getElementById("exp_date").value;
-    const current_stock = document.getElementById("current_stock").value;
-    const threshold = document.getElementById("threshold").value;
-    const remark = document.getElementById("remark").value;
-    const monthInput = document.getElementById("exp_date").value;
-    const selectedMonth = monthInput;
-    const [year, month] = selectedMonth.split("-");
-    const formattedMonth = `${month}/${year}`;
+    const dateofBirth = document.getElementById("dateofBirth").value;
+    const gender = document.getElementById("gender").value;
+    const diagnosis = document.getElementById("diagnosis").value;
+    const medication = document.getElementById("medication").value;
+    const admissionDate = document.getElementById("admissionDate").value;
+    const selectedbday = admissionDate;
+    const [yearb, monthb, dateb] = selectedbday.split("-");
+    const selecteddob = dateofBirth;
+    const [year, month, date] = selecteddob.split("-");
+    const formattedbday = ${monthb}/${dateb}/${yearb};
+    const formatteddob = ${month}/${date}/${year};
 
     if (
       !name ||
-      !mg ||
-      !exp_date ||
-      !current_stock ||
-      !threshold ||
-      !remark ||
-      !monthInput ||
-      !formattedMonth
+      !dateofBirth ||
+      !gender ||
+      !medication ||
+      !admissionDate ||
+      !formattedbday ||
+      !formatteddob
     ) {
       alert("Please fill the all the fields");
     } else {
-      axios.post("http://localhost:8000/inventory", {
+      axios.post("http://localhost:8000/patient", {
         name,
-        mg,
-        exp_date,
-        current_stock,
-        threshold,
-        remark,
+        dateofBirth,
+        gender,
+        diagnosis,
+        medication,
+        admissionDate,
       });
       setOpen(false);
     }
   };
 
   return (
-    <div>
+    <div className={styles.Addpatient}>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add medicine
+        Add patient
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Medicine</DialogTitle>
@@ -72,7 +76,7 @@ export default function Addpatient() {
             autoFocus
             margin="dense"
             id="name"
-            label="Group Name"
+            label="Name"
             type="Name"
             fullWidth
             variant="standard"
@@ -82,17 +86,23 @@ export default function Addpatient() {
             autoFocus
             margin="dense"
             id="dateofBirth"
-            label="Strength (mg)"
-            type="text"
+            label="Date of Birth"
+            type="date"
             fullWidth
             variant="standard"
+            inputProps={{
+              max: maxDate,
+              style: {
+                marginLeft: "130px",
+              },
+            }}
             required
           />
           <TextField
             autoFocus
             margin="dense"
             id="gender"
-            label="Expiry Date MM/YYYY"
+            label="gender"
             type="text"
             fullWidth
             variant="standard"
@@ -102,8 +112,8 @@ export default function Addpatient() {
             autoFocus
             margin="dense"
             id="diagnosis"
-            label="Current Stock"
-            type="number"
+            label="diagnosis"
+            type="text"
             fullWidth
             variant="standard"
             required
@@ -112,8 +122,8 @@ export default function Addpatient() {
             autoFocus
             margin="dense"
             id="medication"
-            label="Threshold"
-            type="number"
+            label="medication"
+            type="text"
             fullWidth
             variant="standard"
             required
@@ -122,36 +132,29 @@ export default function Addpatient() {
             autoFocus
             margin="dense"
             id="admissionDate"
-            label="Remark"
-            type="text"
+            label="Admission Date"
+            type="date"
             fullWidth
             variant="standard"
-            required
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="familyMembers"
-            label="Remark"
-            type="text"
-            fullWidth
-            variant="standard"
-            required
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="StaffMembers"
-            label="Remark"
-            type="text"
-            fullWidth
-            variant="standard"
+            inputProps={{
+              max: maxDate,
+              shrink: true,
+              style: {
+                marginLeft: "130px",
+              },
+            }}
             required
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handlesubmit} id="submit">
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handlesubmit(e);
+            }}
+            id="submit"
+          >
             Create
           </Button>
         </DialogActions>

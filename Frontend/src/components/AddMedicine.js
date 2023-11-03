@@ -7,13 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
+import styles from "../css/Addmedicine.module.css";
 
 export default function AddMedicine() {
   const [open, setOpen] = useState(false);
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentmonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-  const maxDate = `${currentYear}-${currentmonth}`;
+  const maxDate = ${currentYear}-${currentmonth};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,7 +34,7 @@ export default function AddMedicine() {
     const monthInput = document.getElementById("exp_date").value;
     const selectedMonth = monthInput;
     const [year, month] = selectedMonth.split("-");
-    const formattedMonth = `${month}/${year}`;
+    const formattedMonth = ${month}/${year};
 
     if (
       !name ||
@@ -60,7 +61,7 @@ export default function AddMedicine() {
   };
 
   return (
-    <div>
+    <div className={styles.Addmedicine}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add medicine
       </Button>
@@ -96,7 +97,12 @@ export default function AddMedicine() {
             type="month"
             fullWidth
             variant="standard"
-            inputProps={{ max: maxDate }}
+            inputProps={{
+              max: maxDate,
+              style: {
+                marginLeft: "170px",
+              },
+            }}
             required
           />
           <TextField
