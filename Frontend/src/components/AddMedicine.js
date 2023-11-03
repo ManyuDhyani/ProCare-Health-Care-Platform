@@ -14,7 +14,7 @@ export default function AddMedicine() {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentmonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-  const maxDate = ${currentYear}-${currentmonth};
+  const maxDate = `${currentYear}-${currentmonth}`;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,7 +34,7 @@ export default function AddMedicine() {
     const monthInput = document.getElementById("exp_date").value;
     const selectedMonth = monthInput;
     const [year, month] = selectedMonth.split("-");
-    const formattedMonth = ${month}/${year};
+    const formattedMonth = `${month}/${year}`;
 
     if (
       !name ||
@@ -57,6 +57,7 @@ export default function AddMedicine() {
         remark,
       });
       setOpen(false);
+      alert("Medicine added successfully");
     }
   };
 
@@ -84,7 +85,7 @@ export default function AddMedicine() {
             margin="dense"
             id="mg"
             label="Strength (mg)"
-            type="text"
+            type="Number"
             fullWidth
             variant="standard"
             required

@@ -1,4 +1,18 @@
 .Addmedicine {
+
+  color: green;
+  background-color: lightblue;
+}
+
+.Addpatient {
+  color: green;
+  background-color: lightblue;
+}
+
+.patient {
+  background-color: lightblue;
+}
+
     color: green;
     background-color: lightblue;
   }
@@ -55,6 +69,7 @@
   }
   
   .button {
-    background-color: #2dab00 !important;
-    color: black !important;
+    background-color: #2dab00
+    color: black;
   }
+
