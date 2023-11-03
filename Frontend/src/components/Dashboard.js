@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import Inventory from "./Inventory";
 import Patients from "./Patients";
 import Feedback from "./Feedback";
+import FeedbackData from "./FeedbackData";
 
 const defaultTheme = createTheme();
 
@@ -31,8 +32,6 @@ function preventDefault(event) {
 export default function Dashboard() {
   const location = useLocation();
   let user = location.state && location.state.user;
-  // console.log("Printing User");
-  // console.log(user);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -70,23 +69,22 @@ export default function Dashboard() {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              {user.type == "S" ||
-                (user.type == "F" && (
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        height: 240,
-                        overflow: "auto",
-                      }}
-                    >
-                      {/* <Inventory /> */}
-                      <Feedback UID={user.userID} />
-                    </Paper>
-                  </Grid>
-                ))}
+              {(user.type == "S" || user.type == "F") && (
+                <Grid item xs={12} md={4} lg={3}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 240,
+                      overflow: "auto",
+                    }}
+                  >
+                    {/* <Inventory /> */}
+                    <Feedback UID={user.userID} />
+                  </Paper>
+                </Grid>
+              )}
 
               {/* Recent Orders */}
               {(user.type == "S" || user.type == "A") && (
@@ -106,6 +104,22 @@ export default function Dashboard() {
                         (user.type == "A" && (
                           <Link href="/inventory">Go to Inventory</Link>
                         ))} */}
+                  </Paper>
+                </Grid>
+              )}
+              {(user.type == "S" || user.type == "A") && (
+                <Grid item xs={12}>
+                  <h1>{user.type == "A" && "All "}Feedback</h1>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 230,
+                      overflow: "auto",
+                    }}
+                  >
+                    <FeedbackData></FeedbackData>
                   </Paper>
                 </Grid>
               )}

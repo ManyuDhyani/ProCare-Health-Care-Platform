@@ -29,7 +29,7 @@ const ExpandMore = styled((props) => {
 
 export default function MedCard(props) {
   const [expanded, setExpanded] = useState(false);
-  console.log(props.props.name);
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

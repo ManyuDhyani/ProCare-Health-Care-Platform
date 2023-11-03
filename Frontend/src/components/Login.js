@@ -34,7 +34,7 @@ const Login = () => {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(email, password);
+
     try {
       setNotValid(false);
       const response = await axios.post("http://localhost:8000/login", {

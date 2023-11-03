@@ -1,9 +1,13 @@
 .Addmedicine {
-    color: green;
-    background-color: lightblue;
-  }
-  
-  .Addpatient {
-    color: green;
-    background-color: lightblue;
-  }
+  color: green;
+  background-color: lightblue;
+}
+
+.Addpatient {
+  color: green;
+  background-color: lightblue;
+}
+
+.patient {
+  background-color: lightblue;
+}

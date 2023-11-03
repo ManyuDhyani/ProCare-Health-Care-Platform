@@ -8,7 +8,7 @@ const createPatient = async (
   gender,
   diagnosis,
   medication,
-  admissionDate,
+  admissionDate
 ) => {
   console.log("Inside the create function");
   name = name.trim();
@@ -37,7 +37,7 @@ const createPatient = async (
     _id: insertPatient.insertedId,
   });
   if (!fetchAgain) {
-    throw { statusCode: 404, error: No patient with the id:- ${id} };
+    throw { statusCode: 404, error: `No patient with the id:- ${id}` };
   }
   fetchAgain._id = fetchAgain._id.toString();
   return fetchAgain;
@@ -79,15 +79,19 @@ const getPatientByID = async (patiendID) => {
 const getPatientByFamilyMember = async (familyID) => {
   familyID = familyID.trim();
   const patientsCollections = await patients();
-  const patientsWithFamilyMember = await patientsCollections.find({ familyMembers: familyID }).toArray();
-    return patientsWithFamilyMember;
+  const patientsWithFamilyMember = await patientsCollections
+    .find({ familyMembers: familyID })
+    .toArray();
+  return patientsWithFamilyMember;
 };
 
 //Get all patients who have staff member in StaffMembers array
 const getPatientByStaffMember = async (StaffMemberID) => {
   StaffMemberID = StaffMemberID.trim();
   const patientsCollections = await patients();
-  const patientsWithStaffMember = await patientsCollections.find({ StaffMembers: StaffMemberID }).toArray();
+  const patientsWithStaffMember = await patientsCollections
+    .find({ StaffMembers: StaffMemberID })
+    .toArray();
   return patientsWithStaffMember;
 };
 
@@ -96,5 +100,5 @@ module.exports = {
   getAllPatients,
   getPatientByID,
   getPatientByFamilyMember,
-  getPatientByStaffMember
+  getPatientByStaffMember,
 };

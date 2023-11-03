@@ -15,8 +15,7 @@ export default function Addpatient() {
   const currentYear = currentDate.getFullYear();
   const currentmonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
   const currDate = (currentDate.getDate() + 1).toString().padStart(2, "0");
-  console.log(currDate);
-  const maxDate = ${currentYear}-${currDate}-${currentmonth};
+  const maxDate = `${currentYear}-${currDate}-${currentmonth}`;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,8 +36,8 @@ export default function Addpatient() {
     const [yearb, monthb, dateb] = selectedbday.split("-");
     const selecteddob = dateofBirth;
     const [year, month, date] = selecteddob.split("-");
-    const formattedbday = ${monthb}/${dateb}/${yearb};
-    const formatteddob = ${month}/${date}/${year};
+    const formattedbday = `${monthb}/${dateb}/${yearb}`;
+    const formatteddob = `${month}/${date}/${year}`;
 
     if (
       !name ||
@@ -60,6 +59,7 @@ export default function Addpatient() {
         admissionDate,
       });
       setOpen(false);
+      alert("Patient added successfully");
     }
   };
 
@@ -69,7 +69,7 @@ export default function Addpatient() {
         Add patient
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Medicine</DialogTitle>
+        <DialogTitle>Patient Details</DialogTitle>
         <DialogContent>
           <DialogContentText>Please enter Medicine details</DialogContentText>
           <TextField

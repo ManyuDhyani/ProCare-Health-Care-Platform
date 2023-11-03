@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 export default function Inventory(props) {
   const [data, setData] = useState(0);
   const [nullmed, setNullmed] = useState(false);
-  console.log(props.props.user_type);
   const getdata = async () => {
     setNullmed(false);
     let inv = await axios.get("http://localhost:8000/inventory");

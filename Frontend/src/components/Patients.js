@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
+import styles from "../css/Addmedicine.module.css";
 
 export default function Patients(props) {
   const [rows, setRows] = React.useState([]); // Use state to store the patient data
@@ -13,8 +14,6 @@ export default function Patients(props) {
   const getPatientdata = async () => {
     try {
       let user = props.userObj;
-      console.log("Printing User Objee");
-      console.log(user);
       const response = await axios.get("http://localhost:8000/patient/");
       const patients = response.data;
       // console.log("Printing patients");
@@ -53,7 +52,7 @@ export default function Patients(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <React.Fragment className={styles.patient}>
       <Table size="small">
         <TableHead>
           <TableRow>
