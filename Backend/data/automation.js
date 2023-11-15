@@ -65,7 +65,7 @@ const registeredAlert = async (emailId) => {
     subject: "Registration Successful", // Subject line
     text: messg,
   };
-
+};
 module.exports = {
   inventoryAlert,
   patientStatusAlert,
