@@ -4,6 +4,7 @@ const user_collection = mongoCollections.users;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 let { ObjectId } = require("mongodb");
+const registerAlert = require("./automation");
 
 const createUser = async (email, password, phoneNumber) => {
   // Error checking for username and password
@@ -34,7 +35,9 @@ const createUser = async (email, password, phoneNumber) => {
   // console.log(insertUser);
   if (!insertUser.acknowledged || insertUser.insertedCount === 0)
     throw { statusCode: 500, error: "Internal Server Error" };
-
+  else {
+    await registerAlert.registeredAlert(email);
+  }
   return { insertedUser: true };
 };
 
@@ -106,9 +109,7 @@ const getFamilyMemberByParentId = async (patientId) => {
 
 const getAllUsers = async () => {
   const userCollections = await user_collection();
-  let getUsers = await userCollections
-    .find({})
-    .toArray();
+  let getUsers = await userCollections.find({}).toArray();
 
   if (getUsers.length === 0) {
     throw { statusCode: 400, error: "No Users in Database" };
