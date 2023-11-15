@@ -1,6 +1,8 @@
 const mongoCollections = require("../Config/mongoCollections");
 const patients = mongoCollections.patients;
 let { ObjectId } = require("mongodb");
+const automation = require("./automation");
+
 //Create Function
 const createPatient = async (
   name,
@@ -107,6 +109,8 @@ const updatePatient = async (
 
   //Get the patient first
   let fectchObj = getPatientByID(patientId);
+
+  await automation.patientStatusAlert(status);
 
   let newObj = {
     name: name,
