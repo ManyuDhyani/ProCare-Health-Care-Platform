@@ -39,40 +39,21 @@ const inventoryAlert = async (medicationStock, minimumThreshold) => {
   }
 };
 
-const patientStatusAlert = async (status) => {
+const patientStatusAlert = async (emailId, status) => {
   // Email config for status
   const mailOptionsStatus = {
     from: "hcare.max.18@gmail.com", // sender address
-    to: "manyudhyani@gmail.com", // list of receivers
+    to: emailId, // list of receivers
     subject: "Patient Status: " + status, // Subject line
   };
-  if (status === "stable") {
-    mailOptionsStatus.text = "Your patient is stable";
-    transporter.sendMail(mailOptionsStatus, (error, info) => {
-      if (error) {
-        return console.error(error);
-      }
-      console.log("Email sent: " + info.response);
-    });
-  } else if (status === "critical") {
-    mailOptionsStatus.text = "Your patient is critical";
-    transporter.sendMail(mailOptionsStatus, (error, info) => {
-      if (error) {
-        return console.error(error);
-      }
-      console.log("Email sent: " + info.response);
-    });
-  } else if (status === "discharged") {
-    mailOptionsStatus.text = "Your patient is discharged";
-    transporter.sendMail(mailOptionsStatus, (error, info) => {
-      if (error) {
-        return console.error(error);
-      }
-      console.log("Email sent: " + info.response);
-    });
-  } else {
-    console.log("No change in status. No email sent.");
-  }
+
+  mailOptionsStatus.text = `Your patient is ${status}`;
+  transporter.sendMail(mailOptionsStatus, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
 };
 
 const registeredAlert = async (emailId) => {
@@ -84,13 +65,6 @@ const registeredAlert = async (emailId) => {
     subject: "Registration Successful", // Subject line
     text: messg,
   };
-  transporter.sendMail(mailOptionsStatus, (error, info) => {
-    if (error) {
-      return console.error(error);
-    }
-    console.log("Email sent: " + info.response);
-  });
-};
 
 module.exports = {
   inventoryAlert,

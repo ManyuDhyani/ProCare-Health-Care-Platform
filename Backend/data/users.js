@@ -92,7 +92,7 @@ const getFamilyMemberByParentId = async (patientId) => {
   const userCollections = await userCollection();
   let getFamilyMember = await userCollections
     .find({
-      patients: { $elemMatch: { patientID } },
+      patients: { $elemMatch: { patientId } },
       type: "FamilyMember",
     })
     .toArray();
@@ -121,10 +121,24 @@ const getAllUsers = async () => {
   return getUsers;
 };
 
+const getUserEmailByID = async (userId) => {
+  email = email.trim();
+  const userCollections = await user_collection();
+  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) })
+    .email;
+  if (!getEmailID) {
+    throw { statusCode: 400, error: "No User Found" };
+  }
+
+  console.log(getEmailID);
+  return getEmailID;
+};
+
 module.exports = {
   createUser,
   checkUser,
   getStaffMemberByPatientId,
   getFamilyMemberByParentId,
   getAllUsers,
+  getUserEmailByID,
 };

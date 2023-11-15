@@ -2,6 +2,7 @@ const mongoCollections = require("../Config/mongoCollections");
 const patients = mongoCollections.patients;
 let { ObjectId } = require("mongodb");
 const automation = require("./automation");
+const usersData = require("./users");
 
 //Create Function
 const createPatient = async (
@@ -112,8 +113,18 @@ const updatePatient = async (
 
   //Get the patient first
   let fectchObj = getPatientByID(patientId);
-
-  await automation.patientStatusAlert(status);
+  if (fectchObj.status !== status) {
+    //Before we automate we will need to get all the familyMem IDs and Staff Mem Ids
+    //For each IDs we need to fetch their data and get their email IDS
+    // And the for each Email IDs we will call this automation function to send email
+    let familyMebArr = fectchObj.familyMembers;
+    let StaffMemArr = fectchObj.StaffMembers;
+    let AllUsersArr = familyMebArr.concat(StaffMemArr);
+    AllUsersArr.forEach(async (elem) => {
+      let emailId = usersData.getUserEmailByID(elem);
+      await automation.patientStatusAlert(emailId, status);
+    });
+  }
 
   let newObj = {
     name: name,
