@@ -112,6 +112,46 @@ const getMedicineAboutToExp = async () => {
   return medicationsAboutToExp;
 };
 
+const updateMedicine = async (
+  medID,
+  name,
+  mg,
+  exp_date,
+  current_stock,
+  threshold,
+  remark
+) => {
+  medID = medID.trim();
+
+  //Get the patient first
+  let Medicine = getMedicineById(medID);
+
+  let newMedicine = {
+    name: name,
+    mg: mg,
+    exp_date: exp_date,
+    current_stock: current_stock,
+    threshold: threshold,
+    remark: remark,
+  };
+
+  const inventoryCollections = await inventory();
+  const result = await inventoryCollections.updateOne(
+    { _id: ObjectId(medID) }, // Assuming patientId is a MongoDB ObjectId
+    { $set: newMedicine }
+  );
+
+  if (result.modifiedCount === 1) {
+    console.log(`Medicine with ID ${medID} successfully updated.`);
+  } else {
+    console.log(`Update for Medicine with ID ${medID} failed.`);
+    throw {
+      statusCode: 404,
+      error: "Medicine could not be updated",
+    };
+  }
+};
+
 module.exports = {
   createMedicine,
   getAllMedicines,

@@ -95,10 +95,51 @@ const getPatientByStaffMember = async (StaffMemberID) => {
   return patientsWithStaffMember;
 };
 
+const updatePatient = async (
+  patientId,
+  name,
+  dataofBirth,
+  diagnosis,
+  medication,
+  admissionDate
+) => {
+  patientId = patientId.trim();
+
+  //Get the patient first
+  let fectchObj = getPatientByID(patientId);
+
+  let newObj = {
+    name: name,
+    dataofBirth: dataofBirth,
+    diagnosis: diagnosis,
+    medication: medication,
+    admissionDate: admissionDate,
+    familyMembers: fectchObj.familyMembers,
+    StaffMembers: fectchObj.StaffMembers,
+  };
+
+  const patientsCollections = await patients();
+  const result = await patientsCollections.updateOne(
+    { _id: ObjectId(patientId) }, // Assuming patientId is a MongoDB ObjectId
+    { $set: newObj }
+  );
+
+  if (result.modifiedCount === 1) {
+    console.log(`Patient with ID ${patientId} successfully updated.`);
+  } else {
+    console.log(`Update for patient with ID ${patientId} failed.`);
+    throw {
+      statusCode: 404,
+      error: "Patient could not be updated",
+    };
+  }
+};
+
 module.exports = {
   createPatient,
   getAllPatients,
   getPatientByID,
   getPatientByFamilyMember,
   getPatientByStaffMember,
+  updatePatient,
 };
