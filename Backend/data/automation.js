@@ -17,13 +17,14 @@ const transporter = nodemailer.createTransport(smtpConfig);
 const medicationStock = 4; // Replace with your actual stock count
 const minimumThreshold = 10;
 
-// Email configuration
+// Email configuration for inventory
 const mailOptions = {
   from: 'hcare.max.18@gmail.com', // sender address
   to: 'manyudhyani@gmail.com', // list of receivers
   subject: 'Medication Stock Alert', // Subject line
   text: `Medication stock is below the minimum threshold. Current stock: ${medicationStock}`
 };
+
 
 const inventoryAlert  = async (medicationStock, minimumThreshold) => {
 // Check stock level and send email if below the threshold
@@ -39,7 +40,46 @@ if (medicationStock < minimumThreshold) {
   }
 }
 
+const patientStatusAlert  = async (status) => {
+    // Email config for status
+    const mailOptionsStatus = {
+        from: 'hcare.max.18@gmail.com', // sender address
+        to: 'manyudhyani@gmail.com', // list of receivers
+        subject: 'Patient Status: ' + status , // Subject line
+      };
+    if (status === "stable" ) {
+        mailOptionsStatus.text = 'Your patient is stable';
+        transporter.sendMail(mailOptionsStatus, (error, info) => {
+          if (error) {
+            return console.error(error);
+          }
+          console.log('Email sent: ' + info.response);
+        });
+      } 
+      else if (status === "critical") {
+        mailOptionsStatus.text = 'Your patient is critical';
+        transporter.sendMail(mailOptionsStatus, (error, info) => {
+            if (error) {
+              return console.error(error);
+            }
+            console.log('Email sent: ' + info.response);
+          });
+      } else if (status === "discharged") {
+        mailOptionsStatus.text = 'Your patient is discharged';
+        transporter.sendMail(mailOptionsStatus, (error, info) => {
+            if (error) {
+              return console.error(error);
+            }
+            console.log('Email sent: ' + info.response);
+          });
+      }
+      else {
+        console.log('No change in status. No email sent.');
+      }
+    }
+
 
 module.exports = {
     inventoryAlert,
+    patientStatusAlert,
   };
