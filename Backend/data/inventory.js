@@ -2,6 +2,7 @@ const mongoCollections = require("../Config/mongoCollections");
 const validationFunc = require("../helpers");
 const inventory = mongoCollections.inventory;
 let { ObjectId } = require("mongodb");
+const automation = require("./automation");
 
 const createMedicine = async (
   name,
@@ -125,6 +126,7 @@ const updateMedicine = async (
 
   //Get the patient first
   let Medicine = getMedicineById(medID);
+  await automation.inventoryAlert(parseInt(current_stock, 10), parseInt(threshold, 10));
 
   let newMedicine = {
     name: name,
