@@ -8,7 +8,8 @@ const createPatient = async (
   gender,
   diagnosis,
   medication,
-  admissionDate
+  admissionDate,
+  status
 ) => {
   console.log("Inside the create function");
   name = name.trim();
@@ -26,6 +27,7 @@ const createPatient = async (
     admissionDate: admissionDate,
     familyMembers: [],
     StaffMembers: [],
+    status: "stable",
   };
   const patientsCollections = await patients();
   //Insert the record
@@ -101,7 +103,8 @@ const updatePatient = async (
   dataofBirth,
   diagnosis,
   medication,
-  admissionDate
+  admissionDate,
+  status
 ) => {
   patientId = patientId.trim();
 
@@ -116,6 +119,7 @@ const updatePatient = async (
     admissionDate: admissionDate,
     familyMembers: fectchObj.familyMembers,
     StaffMembers: fectchObj.StaffMembers,
+    status: status,
   };
 
   const patientsCollections = await patients();
