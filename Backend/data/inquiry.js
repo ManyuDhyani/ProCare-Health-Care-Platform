@@ -9,7 +9,7 @@ const createInquiry = async (patiendId, familyMemId, inquiryMessage) => {
     familyMemId: familyMemId,
     inquiryMessage: inquiryMessage,
   };
-  let createInquiry = await inquiryCollection.insertOne({ inquiryObj });
+  let createInquiry = await inquiryCollection.insertOne(inquiryObj);
   if (!createInquiry.acknowledged || createInquiry.insertedCount === 0) {
     throw { statusCode: 500, error: "The inquiry was not added" };
   }
@@ -20,21 +20,22 @@ const createInquiry = async (patiendId, familyMemId, inquiryMessage) => {
     throw { statusCode: 404, error: `No inquiry with the id:- ${patiendId}` };
   }
   fetchAgain._id = fetchAgain._id.toString();
+  console.log(fetchAgain);
   return fetchAgain;
 };
 
 const getInquiry = async (patientId) => {
   const inquiryCollection = await inquiry();
   let getAllInquiries = await inquiryCollection
-    .find({ _id: ObjectId(patientId) })
+    .find({ patiendId: patientId })
     .toArray();
-  if (getAllInquiries.length() == 0) {
-    throw { statusCode: 404, error: `No inquiry with the id:- ${patiendId}` };
+  if (getAllInquiries.length == 0) {
+    throw { statusCode: 404, error: `No inquiry with the id:- ${patientId}` };
   }
-  getAllInquiries = getAllInquiries.forEach((elem) => {
+  getAllInquiries.forEach((elem) => {
     elem._id = elem._id.toString();
   });
-
+  console.log(getAllInquiries);
   return getAllInquiries;
 };
 

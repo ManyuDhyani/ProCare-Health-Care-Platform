@@ -6,7 +6,7 @@ const inquiryData = data.inquiry;
 router.route("/").post(async (req, res) => {
   try {
     let { patiendId, familyMemId, inquiryMessage } = req.body;
-    let createInq = inquiryData.createInquiry(
+    let createInq = await inquiryData.createInquiry(
       patiendId,
       familyMemId,
       inquiryMessage
@@ -20,7 +20,7 @@ router.route("/").post(async (req, res) => {
 router.route("/:patientId").get(async (req, res) => {
   try {
     let patientId = req.params.patientId;
-    let getAllInquiries = inquiryData.getInquiry(patientId);
+    let getAllInquiries = await inquiryData.getInquiry(patientId);
     res.json(getAllInquiries);
   } catch (e) {
     res.status(e.statusCode).json(e.error);
