@@ -152,6 +152,21 @@ const updatePatient = async (
       error: "Patient could not be updated",
     };
   }
+
+  //Fetch again
+  let ID = ObjectId(patientId);
+  let fetchPatientAgain = await patientsCollections.findOne({
+    _id: ID,
+  });
+  if (!fetchPatientAgain) {
+    throw {
+      statusCode: 404,
+      error: "No Patient with the given ID present in the Database",
+    };
+  }
+  fetchPatientAgain._id = fetchPatientAgain._id.toString();
+  return fetchPatientAgain;
+
 };
 
 module.exports = {
