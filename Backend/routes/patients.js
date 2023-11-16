@@ -35,14 +35,44 @@ router
       res.status(e.statusCode).json(e.error);
     }
   });
-router.route("/:patientID").get(async (req, res) => {
-  //Get Patient with ID
-  try {
-    let pId = req.params.patientID;
-    const getPatient = await patientData.getPatientByID(pId);
-    res.json(getPatient);
-  } catch (e) {
-    res.status(e.statusCode).json(e.error);
-  }
-});
+router
+  .route("/:patientID")
+  .get(async (req, res) => {
+    //Get Patient with ID
+    try {
+      let pId = req.params.patientID;
+      const getPatient = await patientData.getPatientByID(pId);
+      res.json(getPatient);
+    } catch (e) {
+      res.status(e.statusCode).json(e.error);
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      let pId = req.params.patientID;
+      let { name, dataofBirth, diagnosis, medication, admissionDate, status } =
+        req.body;
+      console.log(
+        name,
+        dataofBirth,
+        diagnosis,
+        medication,
+        admissionDate,
+        status
+      );
+      const getUpdatedPatient = await patientData.updatePatient(
+        pId,
+        name,
+        dataofBirth,
+        diagnosis,
+        medication,
+        admissionDate,
+        status
+      );
+      res.json(getUpdatedPatient);
+    } catch (e) {
+      res.status(e.statusCode).json(e.error);
+    }
+  });
+
 module.exports = router;
