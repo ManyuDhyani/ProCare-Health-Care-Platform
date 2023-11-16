@@ -69,7 +69,7 @@ export default function Dashboard() {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              {(user.type == "S" || user.type == "F") && (
+              {user.type == "F" && (
                 <Grid item xs={12} md={4} lg={3}>
                   <Paper
                     sx={{
@@ -107,7 +107,7 @@ export default function Dashboard() {
                   </Paper>
                 </Grid>
               )}
-              {(user.type == "S" || user.type == "A") && (
+              {user.type == "A" && (
                 <Grid item xs={12}>
                   <h1>{user.type == "A" && "All "}Feedback</h1>
                   <Paper
