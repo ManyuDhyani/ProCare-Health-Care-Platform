@@ -22,7 +22,7 @@ import Inventory from "./Inventory";
 import Patients from "./Patients";
 import Feedback from "./Feedback";
 import FeedbackData from "./FeedbackData";
-
+import Inquiry from "./Inquiry";
 const defaultTheme = createTheme();
 
 function preventDefault(event) {
@@ -120,6 +120,23 @@ export default function Dashboard() {
                     }}
                   >
                     <FeedbackData></FeedbackData>
+                  </Paper>
+                </Grid>
+              )}
+              {user.type == "F" && (
+                <Grid item xs={12}>
+                  <h1>Inquiry</h1>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 230,
+                      width: 300,
+                      overflow: "auto",
+                    }}
+                  >
+                    <Inquiry userObj={user}></Inquiry>
                   </Paper>
                 </Grid>
               )}
