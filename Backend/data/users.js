@@ -122,7 +122,8 @@ const getAllUsers = async () => {
 };
 
 const getUserEmailByID = async (userId) => {
-  email = email.trim();
+  //email = email.trim();
+  userId = userId.trim()
   const userCollections = await user_collection();
   let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) })
     .email;
