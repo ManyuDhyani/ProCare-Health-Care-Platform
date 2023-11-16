@@ -59,15 +59,40 @@ const patientStatusAlert = async (emailId, status) => {
 const registeredAlert = async (emailId) => {
   // sending email to registered users
   const messg = `We're pleased to inform you that your registration (with emailId: ${emailId}) for our service has been successfully received. Thank you for choosing to be a part of our community! Your account is currently pending activation and will undergo a thorough review process by our administrative team. We anticipate completing this process within the next 24 hours. Once the necessary checks and actions are taken, your account will be activated. We appreciate your patience and understanding during this brief period. Thank you for choosing our service. We look forward to having you on board!`;
-  const mailOptionsStatus = {
+  const mailOptionsRegister = {
     from: "hcare.max.18@gmail.com", // sender address
     to: emailId, // list of receivers
     subject: "Registration Successful", // Subject line
     text: messg,
   };
+  transporter.sendMail(mailOptionsRegister, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
 };
+
+// Email for feedback to company
+const feedbackAlert = async (feedback) => {
+  const mailOptionsFeedback = {
+    from: "hcare.max.18@gmail.com", // sender address
+    to: "hcare.max.18@gmail.com", // list of receivers
+    subject: "New Feedback", // Subject line
+    text: feedback,
+  }
+  transporter.sendMail(mailOptionsFeedback, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
+}
+
+
 module.exports = {
   inventoryAlert,
   patientStatusAlert,
   registeredAlert,
+  feedbackAlert,
 };
