@@ -1,23 +1,27 @@
 const mongoCollections = require("../Config/mongoCollections");
 const feedback = mongoCollections.feedback;
 let { ObjectId } = require("mongodb");
+const automation = require("./automation");
 
 const createFeedback = async (feedbackMsg, familyUserID) => {
   console.log("Inside createFeedback");
   // Cleaning Data: Triming input for storage
   feedbackMsg = feedbackMsg.trim();
-  console.log(1);
+  
   const feedbackCollection = await feedback();
-  console.log(2);
+  
   let newFeedback = {
     feedbackMsg: feedbackMsg,
     familyUserID: familyUserID,
   };
-  console.log(newFeedback);
+  
   let insertFeedback = await feedbackCollection.insertOne(newFeedback);
   if (!insertFeedback.acknowledged || insertFeedback.insertedCount === 0) {
     throw { statusCode: 500, error: "The feedback is not added" };
   }
+
+  await automation.feedbackAlert(feedbackMsg);
+  
   let newFeedbackID = insertFeedback.insertedId;
   let result = await feedbackCollection.findOne({ _id: newFeedbackID });
   if (!result) {
