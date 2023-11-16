@@ -113,28 +113,19 @@ const getMedicineAboutToExp = async () => {
   return medicationsAboutToExp;
 };
 
-const updateMedicine = async (
-  medID,
-  name,
-  mg,
-  exp_date,
-  current_stock,
-  threshold,
-  remark
-) => {
+const updateMedicine = async (medID, current_stock, threshold) => {
   medID = medID.trim();
 
   //Get the patient first
-  let Medicine = getMedicineById(medID);
-  await automation.inventoryAlert(parseInt(current_stock, 10), parseInt(threshold, 10));
+  // let Medicine = getMedicineById(medID);
+  await automation.inventoryAlert(
+    parseInt(current_stock, 10),
+    parseInt(threshold, 10)
+  );
 
   let newMedicine = {
-    name: name,
-    mg: mg,
-    exp_date: exp_date,
     current_stock: current_stock,
     threshold: threshold,
-    remark: remark,
   };
 
   const inventoryCollections = await inventory();
@@ -154,10 +145,20 @@ const updateMedicine = async (
   }
 };
 
+const deleteMedicine = async (medID) => {
+  console.log(1);
+  const inventoryCollection = await inventory();
+  const inventory = await inventoryCollection.deleteOne({
+    _id: medID,
+  });
+};
+
 module.exports = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
   getMedicineLowinThreshold,
   getMedicineAboutToExp,
+  updateMedicine,
+  deleteMedicine,
 };
