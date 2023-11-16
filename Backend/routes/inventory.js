@@ -35,27 +35,48 @@ router
     } catch (e) {}
   });
 
-router.route("/inventory").post(async (req, res) => {
-  try {
-    let name = req.body.name;
-    let mg = req.body.mg;
-    let exp_date = req.body.exp_date;
-    let current_stock = req.body.current_stock;
-    let threshold = req.body.threshold;
-    let remark = req.body.remark;
+router
+  .route("/inventory")
+  .post(async (req, res) => {
+    try {
+      let name = req.body.name;
+      let mg = req.body.mg;
+      let exp_date = req.body.exp_date;
+      let current_stock = req.body.current_stock;
+      let threshold = req.body.threshold;
+      let remark = req.body.remark;
 
-    let InvList = await inv.createMedicine(
-      name,
-      mg,
-      exp_date,
-      current_stock,
-      threshold,
-      remark
+      let InvList = await inv.createMedicine(
+        name,
+        mg,
+        exp_date,
+        current_stock,
+        threshold,
+        remark
+      );
+
+      res.json(InvList);
+    } catch (error) {
+      res.status(404).json("Not found");
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      let del = await inv.deleteMedicine(req.body.id);
+    } catch (e) {}
+  });
+
+router.route("/update").post(async (req, res) => {
+  try {
+    let update = await inv.updateMedicine(
+      req.body._id,
+      req.body.current_stock,
+      req.body.threshold
     );
 
-    res.json(InvList);
-  } catch (error) {
-    res.status(404).json("Not found");
-  }
+    res.json(update).status(200);
+  } catch (e) {
+    console.log(e);
+  }
 });
 module.exports = router;
