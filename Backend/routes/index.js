@@ -3,6 +3,7 @@ const invRoutes = require("./inventory");
 const patientRoutes = require("./patients");
 const adminRoutes = require("./admin");
 const feedbackRoutes = require("./feedback");
+const inquiryRoutes = require("./inquiry");
 
 const ConstructorMethod = (app) => {
   app.use("/", apiRoutes);
@@ -10,6 +11,7 @@ const ConstructorMethod = (app) => {
   app.use("/patient/", patientRoutes);
   app.use("/admin/", adminRoutes);
   app.use("/feedback/", feedbackRoutes);
+  app.use("/inquiry", inquiryRoutes);
   app.use("*", (req, res) => {
     return res.status(404).json("Not Found");
   });
