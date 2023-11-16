@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import PatientList from "./PatientList";
 
 export default function Inquiry(props) {
   const [inquiry, setinquiry] = useState("");
@@ -57,6 +56,7 @@ export default function Inquiry(props) {
         familyMemId: familymemberID,
         inquiryMessage: message,
       });
+    setSubmitted(true);
   };
   React.useEffect(() => {
     getPatients(); // Fetch patient data when the component mounts
