@@ -24,6 +24,7 @@ export default function Inventory(props) {
     return inv;
   };
 
+  console.log(data);
   useEffect(() => {
     getdata();
   }, []);

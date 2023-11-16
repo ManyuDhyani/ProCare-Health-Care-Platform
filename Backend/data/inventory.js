@@ -146,10 +146,9 @@ const updateMedicine = async (medID, current_stock, threshold) => {
 };
 
 const deleteMedicine = async (medID) => {
-  console.log(1);
   const inventoryCollection = await inventory();
-  const inventory = await inventoryCollection.deleteOne({
-    _id: medID,
+  const Deleted = await inventoryCollection.deleteOne({
+    _id: ObjectId(medID),
   });
 };
 
