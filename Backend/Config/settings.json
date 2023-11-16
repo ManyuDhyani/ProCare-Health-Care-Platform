@@ -1,6 +1,6 @@
 {
-    "mongoConfig": {
-      "serverUrl": "mongodb://localhost:27017/",
-      "database": "Team_18_Agile"
-    }
+  "mongoConfig": {
+    "serverUrl": "mongodb://mavericksteam:5kQ5rVsBHyYDBYzTbeqk0Zc74Tmikx1uP7EtCg1M3t9onRs7G6Py63XAEVPgAGEn8lvD8DrRpgDjACDbuiBNmQ%3D%3D@mavericksteam.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=%40mavericksteam%40",
+    "database": "Team_18_Agile"
   }
+}
