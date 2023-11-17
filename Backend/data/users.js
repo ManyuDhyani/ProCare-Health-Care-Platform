@@ -125,14 +125,13 @@ const getUserEmailByID = async (userId) => {
   //email = email.trim();
   userId = userId.trim()
   const userCollections = await user_collection();
-  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) })
-    .email;
+  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) });
   if (!getEmailID) {
     throw { statusCode: 400, error: "No User Found" };
   }
 
   console.log(getEmailID);
-  return getEmailID;
+  return getEmailID.email;
 };
 
 module.exports = {
