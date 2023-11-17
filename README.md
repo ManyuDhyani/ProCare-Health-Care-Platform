@@ -16,11 +16,15 @@ First open terminal and change directory to Backend using cmd:
 Install all dependencies in package.json using cmd:
 >> npm install
 
-We added seed file to add some data. Still to assign user type family, staff, or admin with "F", "S" and "A" respectively we have to use mongoDB compass. Later will add functinality to admin dasboard in sprint 3. For now type command:
->> node seed.js
+Note: we added MongoDB cluster from cloud and have some dummy profile to test application mentioned below. To still locally please change Server Url in Backend>Config>Settings to localhost.
+"serverUrl": "mongodb://localhost:27017/",
 
-Also to run test file "test.js" present in backend folder, we can run it now.
->> node test.js
+You can use that cloud cluster link to get access to Database from Mongo Compass.
+
+Dummy Profile:
+Admin: "mahesh.dhondge@gmail.com" password: ""
+Staff: "manyudhyani@gmail.com" password: "", "ckothadi@stevens.edu" password: ""
+Family: "gsokhi@stevens.edu" password: "", "skala1@stevens.edu" password: "", "gawate@stevens.edu" password: ""
 
 Now continuing with backend server:
 Note: Before Running the Express server please check for MongoDB on your system. The MongoDB should be running at port 27017.
