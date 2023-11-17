@@ -23,6 +23,7 @@ import Patients from "./Patients";
 import Feedback from "./Feedback";
 import FeedbackData from "./FeedbackData";
 import Inquiry from "./Inquiry";
+import InquiryData from "./InquiryData";
 const defaultTheme = createTheme();
 
 function preventDefault(event) {
@@ -137,6 +138,22 @@ export default function Dashboard() {
                     }}
                   >
                     <Inquiry userObj={user}></Inquiry>
+                  </Paper>
+                </Grid>
+              )}
+              {user.type == "S" && (
+                <Grid item xs={12}>
+                  <h1>Inquiry</h1>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 230,
+                      overflow: "auto",
+                    }}
+                  >
+                    <InquiryData userObj={user}></InquiryData>
                   </Paper>
                 </Grid>
               )}
