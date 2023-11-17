@@ -34,7 +34,7 @@ const createPatient = async (
   };
   const patientsCollections = await patients();
   //Insert the record
-  let insertPatient = await patientsCollections.insertOne({ newObj });
+  let insertPatient = await patientsCollections.insertOne(newObj);
   if (!insertPatient.acknowledged || insertPatient.insertedCount === 0) {
     throw { statusCode: 500, error: "The patient was not added" };
   }
@@ -113,7 +113,7 @@ const updatePatient = async (
 
   //Get the patient first
   let fectchObj = await getPatientByID(patientId);
-  
+
   if (fectchObj.status !== status) {
     //Before we automate we will need to get all the familyMem IDs and Staff Mem Ids
     //For each IDs we need to fetch their data and get their email IDS
@@ -167,7 +167,6 @@ const updatePatient = async (
   }
   fetchPatientAgain._id = fetchPatientAgain._id.toString();
   return fetchPatientAgain;
-
 };
 
 module.exports = {
