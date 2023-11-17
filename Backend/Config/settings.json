@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb://localhost:27017",
+    "serverUrl": "mongodb+srv://manyu:UHr2IMMBbHgbKqOH@cluster0.jnnz3ye.mongodb.net/",
     "database": "Team_18_Agile"
   }
 }
