@@ -109,8 +109,7 @@ const updatePatient = async (
   admissionDate,
   status
 ) => {
-  patientId = patientId.trim();
-
+  patientId = patientId.trim();  
   //Get the patient first
   let fectchObj = await getPatientByID(patientId);
 
@@ -118,13 +117,19 @@ const updatePatient = async (
     //Before we automate we will need to get all the familyMem IDs and Staff Mem Ids
     //For each IDs we need to fetch their data and get their email IDS
     // And the for each Email IDs we will call this automation function to send email
-    let familyMebArr = fectchObj.newObj.familyMembers;
-    let StaffMemArr = fectchObj.newObj.StaffMembers;
+    let familyMebArr = fectchObj.familyMembers;
+    let StaffMemArr = fectchObj.StaffMembers;
     let AllUsersArr = familyMebArr.concat(StaffMemArr);
-    AllUsersArr.forEach(async (elem) => {
-      let emailId = usersData.getUserEmailByID(elem);
+    try{
+    
+    for (let i =0 ;i<AllUsersArr.length;i++){    
+      let emailId = await usersData.getUserEmailByID(AllUsersArr[i]);
       await automation.patientStatusAlert(emailId, status);
-    });
+    }
+  }
+  catch(e){
+    console.log(e);
+  }
   }
 
   let newObj = {
@@ -155,6 +160,7 @@ const updatePatient = async (
   }
 
   //Fetch again
+
   let ID = ObjectId(patientId);
   let fetchPatientAgain = await patientsCollections.findOne({
     _id: ID,
