@@ -22,9 +22,9 @@ Note: we added MongoDB cluster from cloud and have some dummy profile to test ap
 You can use that cloud cluster link to get access to Database from Mongo Compass.
 
 Dummy Profile:
-Admin: "mahesh.dhondge@gmail.com" password: ""
-Staff: "manyudhyani@gmail.com" password: "", "ckothadi@stevens.edu" password: ""
-Family: "gsokhi@stevens.edu" password: "", "skala1@stevens.edu" password: "", "gawate@stevens.edu" password: ""
+Admin: "mahesh.dhondge@gmail.com" password: "password1234"
+Staff: "manyudhyani@gmail.com" password: "password1234", "ckothadi@stevens.edu" password: "password1234"
+Family: "gsokhi@stevens.edu" password: "password1234", "skala1@stevens.edu" password: "password1234", "gawate@stevens.edu" password: "password1234"
 
 Now continuing with backend server:
 Note: Before Running the Express server please check for MongoDB on your system. The MongoDB should be running at port 27017.
