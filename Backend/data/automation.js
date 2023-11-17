@@ -21,7 +21,7 @@ const minimumThreshold = 10;
 const mailOptions = {
   from: "hcare.max.18@gmail.com", // sender address
   to: "manyudhyani@gmail.com", // list of receivers
-  subject: "Medication Stock Alert", // Subject line
+  subject: "ProCare: Medication Stock Alert", // Subject line
   text: `Medication stock is below the minimum threshold. Current stock: ${medicationStock}`,
 };
 
@@ -44,7 +44,7 @@ const patientStatusAlert = async (emailId, status) => {
   const mailOptionsStatus = {
     from: "hcare.max.18@gmail.com", // sender address
     to: emailId, // list of receivers
-    subject: "Patient Status: " + status, // Subject line
+    subject: "ProCare: Patient Status - " + status, // Subject line
   };
 
   mailOptionsStatus.text = `Your patient is ${status}`;
@@ -62,7 +62,7 @@ const registeredAlert = async (emailId) => {
   const mailOptionsRegister = {
     from: "hcare.max.18@gmail.com", // sender address
     to: emailId, // list of receivers
-    subject: "Registration Successful", // Subject line
+    subject: "ProCare: Registration Successful", // Subject line
     text: messg,
   };
   transporter.sendMail(mailOptionsRegister, (error, info) => {
@@ -78,7 +78,7 @@ const feedbackAlert = async (feedback) => {
   const mailOptionsFeedback = {
     from: "hcare.max.18@gmail.com", // sender address
     to: "hcare.max.18@gmail.com", // list of receivers
-    subject: "New Feedback", // Subject line
+    subject: "ProCare: New Feedback", // Subject line
     text: feedback,
   }
   transporter.sendMail(mailOptionsFeedback, (error, info) => {
