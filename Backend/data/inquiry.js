@@ -24,18 +24,19 @@ const createInquiry = async (patiendId, familyMemId, inquiryMessage) => {
   return fetchAgain;
 };
 
-const getInquiry = async (patientId) => {
+const getInquiry = async () => {
   const inquiryCollection = await inquiry();
-  let getAllInquiries = await inquiryCollection
-    .find({ patiendId: patientId })
-    .toArray();
-  if (getAllInquiries.length == 0) {
-    throw { statusCode: 404, error: `No inquiry with the id:- ${patientId}` };
-  }
+  // let getAllInquiries = await inquiryCollection
+  //   .find({ patiendId: patientId })
+  //   .toArray();
+  let getAllInquiries = await inquiryCollection.find({}).toArray();
+  // if (getAllInquiries.length == 0) {
+  //   throw { statusCode: 404, error: `No inquiry with the id:- ${patientId}` };
+  // }
   getAllInquiries.forEach((elem) => {
     elem._id = elem._id.toString();
   });
-  console.log(getAllInquiries);
+  // console.log(getAllInquiries);
   return getAllInquiries;
 };
 

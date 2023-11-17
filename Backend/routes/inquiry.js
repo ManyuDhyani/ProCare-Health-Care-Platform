@@ -17,10 +17,10 @@ router.route("/").post(async (req, res) => {
   }
 });
 
-router.route("/:patientId").get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   try {
     let patientId = req.params.patientId;
-    let getAllInquiries = await inquiryData.getInquiry(patientId);
+    let getAllInquiries = await inquiryData.getInquiry();
     res.json(getAllInquiries);
   } catch (e) {
     res.status(e.statusCode).json(e.error);
