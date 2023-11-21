@@ -26,7 +26,7 @@ export default function UpdateMedicine(props) {
     setOpen(false);
   };
 
-  console.log(props.props._id);
+  // console.log(props.props._id);
   const handlesubmit = () => {
     const current_stock = document.getElementById("current_stock").value;
 

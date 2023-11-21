@@ -41,6 +41,7 @@ export default function Patients(props) {
       // console.log(FilteredData);
       // console.log(patients);
       setRows(FilteredData);
+      // console.log("rowsData", rows);
       // console.log("rows", rows);
     } catch (error) {
       console.error("Error fetching patient data:", error);
@@ -52,25 +53,31 @@ export default function Patients(props) {
   }, []);
 
   return (
-    <React.Fragment className={styles.patient}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Diagnosis</TableCell>
-            <TableCell>Medications</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell>{row.newObj.name}</TableCell>
-              <TableCell>{row.newObj.diagnosis}</TableCell>
-              <TableCell>{row.newObj.medication}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <React.Fragment>
+      {rows && rows.length == 0 ? (
+        <div className={styles.patient}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Diagnosis</TableCell>
+                <TableCell>Medications</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row.newObj.name}</TableCell>
+                  <TableCell>{row.newObj.diagnosis}</TableCell>
+                  <TableCell>{row.newObj.medication}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <div className={styles.patient}>No patient data available</div>
+      )}
     </React.Fragment>
   );
 }

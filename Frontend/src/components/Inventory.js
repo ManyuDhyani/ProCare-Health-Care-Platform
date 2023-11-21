@@ -31,36 +31,40 @@ export default function Inventory(props) {
 
   return (
     <React.Fragment>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>mg</TableCell>
-            <TableCell>exp_date</TableCell>
-            <TableCell>Current stock</TableCell>
-            <TableCell>Threshold</TableCell>
-            <TableCell>remark</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.mg}</TableCell>
-                <TableCell>{row.exp_date}</TableCell>
-                <TableCell>
-                  <UpdateMedicine props={row}></UpdateMedicine>
-                </TableCell>
-                <TableCell>{row.threshold}</TableCell>
-                <TableCell>{row.remark}</TableCell>
-                <TableCell>
-                  <DeleteMedicine props={row._id}></DeleteMedicine>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+      {data && data.length > 0 ? (
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>mg</TableCell>
+              <TableCell>exp_date</TableCell>
+              <TableCell>Current stock</TableCell>
+              <TableCell>Threshold</TableCell>
+              <TableCell>remark</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.mg}</TableCell>
+                  <TableCell>{row.exp_date}</TableCell>
+                  <TableCell>
+                    <UpdateMedicine props={row}></UpdateMedicine>
+                  </TableCell>
+                  <TableCell>{row.threshold}</TableCell>
+                  <TableCell>{row.remark}</TableCell>
+                  <TableCell>
+                    <DeleteMedicine props={row._id}></DeleteMedicine>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <div>No inventory available</div>
+      )}
     </React.Fragment>
   );
 }

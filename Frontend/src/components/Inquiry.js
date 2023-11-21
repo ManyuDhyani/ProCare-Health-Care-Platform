@@ -10,7 +10,7 @@ export default function Inquiry(props) {
   const [familymemberID, setFamilyMemberID] = useState("");
 
   let current_user = props.userObj;
-  console.log(current_user.userID);
+  // console.log(current_user.userID);
 
   const handleInquiryChange = (e) => {
     console.log("message", e.target.value);
