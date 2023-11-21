@@ -16,9 +16,17 @@ export default function InquiryData(props) {
     let patientData = await axios.get("http://localhost:8000/patient/");
     // console.log("pati data", patientData.data);
     // console.log("INQ DATA", inquiryData.data);
-    let FilteredData = patientData.data.filter((item) =>
-      item.newObj.StaffMembers.includes(user.userID)
-    );
+    // let FilteredData = patientData.data.filter((item) =>
+    //   item.newObj.StaffMembers.includes(user.userID)
+    // );
+    let FilteredData = patientData.data.filter((item) => {
+      // Check if item.newObj is defined before accessing StaffMembers
+      if (item.newObj && item.newObj.StaffMembers) {
+        return item.newObj.StaffMembers.includes(user.userID);
+      }
+      // If item.newObj or item.newObj.StaffMembers is undefined, skip the check
+      return false;
+    });
     // console.log("FILT", FilteredData);
     let temp = [];
 
@@ -40,23 +48,27 @@ export default function InquiryData(props) {
 
   return (
     <React.Fragment>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Serial No.</TableCell>
-            <TableCell>Inquiry</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((inquiry, index) => (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{inquiry.inquiryMessage}</TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+      {data && data.length > 0 ? (
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Serial No.</TableCell>
+              <TableCell>Inquiry</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.map((inquiry, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{inquiry.inquiryMessage}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <div> No Inquiry data</div>
+      )}
     </React.Fragment>
   );
 }
