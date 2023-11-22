@@ -8,11 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
-import TableBody from "@mui/material/TableBody";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Table from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
+
 import "../App.css";
 
 export default function UpdateMedicine(props) {
