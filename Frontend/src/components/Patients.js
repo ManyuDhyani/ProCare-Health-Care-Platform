@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,7 +8,7 @@ import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
 
 export default function Patients(props) {
-  const [rows, setRows] = React.useState([]); // Use state to store the patient data
+  const [rows, setRows] = useState([]); // Use state to store the patient data
 
   // Function to fetch patient data and set it in the state
   const getPatientdata = async () => {
@@ -39,22 +39,23 @@ export default function Patients(props) {
 
       // console.log("Printing Filtered Data");
       // console.log(FilteredData);
+      // console.log(Array.isArray(FilteredData));
       // console.log(patients);
       setRows(FilteredData);
+      // console.log("FData", FilteredData);
       // console.log("rowsData", rows);
-      // console.log("rows", rows);
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getPatientdata(); // Fetch patient data when the component mounts
   }, []);
 
   return (
     <React.Fragment>
-      {rows && rows.length == 0 ? (
+      {rows && rows.length !== 0 ? (
         <div className={styles.patient}>
           <Table size="small">
             <TableHead>
@@ -62,14 +63,18 @@ export default function Patients(props) {
                 <TableCell>Name</TableCell>
                 <TableCell>Diagnosis</TableCell>
                 <TableCell>Medications</TableCell>
+                <TableCell>Staff</TableCell>
+                <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell>{row.newObj.name}</TableCell>
-                  <TableCell>{row.newObj.diagnosis}</TableCell>
-                  <TableCell>{row.newObj.medication}</TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.diagnosis}</TableCell>
+                  <TableCell>{row.medication}</TableCell>
+                  <TableCell>{row.StaffMembers[0]}</TableCell>
+                  <TableCell>{row.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
