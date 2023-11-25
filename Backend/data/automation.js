@@ -90,6 +90,22 @@ const feedbackAlert = async (feedback) => {
 }
 
 
+// Sending customize message by staff to family
+const customizeAlert = async (message, familyEmails) => {
+  const mailOptionsFeedback = {
+    from: "hcare.max.18@gmail.com", // sender address
+    to: familyEmails, // list of receivers
+    subject: "ProCare: Important update about your Patinet.", // Subject line
+    text: message,
+  }
+  transporter.sendMail(mailOptionsFeedback, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
+}
+
 module.exports = {
   inventoryAlert,
   patientStatusAlert,
