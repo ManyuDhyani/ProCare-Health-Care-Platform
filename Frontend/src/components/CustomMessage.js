@@ -32,6 +32,7 @@ export default function CustomMessage(props) {
       patientId: props.props._id,
       message: m,
     });
+    handleClose();
   };
 
   return (
