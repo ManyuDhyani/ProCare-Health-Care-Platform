@@ -5,10 +5,7 @@ const automation = data.automation;
 
 router.route("/").post(async (req, res) => {
   try {
-    console.log(req.body);
     let { patientId, message } = req.body;
-    console.log("patiendId", patientId);
-    console.log("message", message);
     let createCustomAlert = await automation.customizeAlert(message, patientId);
     res.json("Alert sent");
   } catch (e) {
