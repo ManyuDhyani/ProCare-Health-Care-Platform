@@ -177,10 +177,52 @@ const updatePatientStaff = async (
   diagnosis,
   medication,
   admissionDate,
-  familyMembers,
   StaffMembers,
   status
-) => {};
+) => {
+  let fectchObj = await getPatientByID(patientId);
+  console.log(fectchObj);
+  let newObj = {
+    name: name,
+    dataofBirth: dataofBirth,
+    diagnosis: diagnosis,
+    medication: medication,
+    admissionDate: admissionDate,
+    familyMembers: fectchObj.familyMembers,
+    StaffMembers: [StaffMembers],
+    status: status,
+  };
+  console.log("newObj", newObj);
+  const patientsCollections = await patients();
+  const result = await patientsCollections.updateOne(
+    { _id: ObjectId(patientId) }, // Assuming patientId is a MongoDB ObjectId
+    { $set: newObj }
+  );
+  if (result.modifiedCount === 1) {
+    console.log(`Patient with ID ${patientId} successfully updated.`);
+  } else {
+    console.log(`Update for patient with ID ${patientId} failed.`);
+    throw {
+      statusCode: 404,
+      error: "Patient could not be updated",
+    };
+  }
+
+  //Fetch again
+  let ID = ObjectId(patientId);
+  let fetchPatientAgain = await patientsCollections.findOne({
+    _id: ID,
+  });
+
+  if (!fetchPatientAgain) {
+    throw {
+      statusCode: 404,
+      error: "No Patient with the given ID present in the Database",
+    };
+  }
+  fetchPatientAgain._id = fetchPatientAgain._id.toString();
+  return fetchPatientAgain;
+};
 
 module.exports = {
   createPatient,
@@ -189,4 +231,5 @@ module.exports = {
   getPatientByFamilyMember,
   getPatientByStaffMember,
   updatePatient,
+  updatePatientStaff,
 };

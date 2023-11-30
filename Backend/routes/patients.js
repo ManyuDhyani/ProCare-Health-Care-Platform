@@ -76,4 +76,43 @@ router
     }
   });
 
+router.route("/SF/:patientID").post(async (req, res) => {
+  try {
+    console.log("here");
+    let pId = req.params.patientID;
+    let {
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      StaffMembers,
+      status,
+    } = req.body;
+    console.log(
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      StaffMembers,
+      status
+    );
+
+    const getUpdatedPatient = await patientData.updatePatientStaff(
+      pId,
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      StaffMembers,
+      status
+    );
+    res.json(getUpdatedPatient);
+  } catch (e) {
+    res.status(e.statusCode).json(e.error);
+  }
+});
+
 module.exports = router;
