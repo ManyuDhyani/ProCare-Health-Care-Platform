@@ -4,6 +4,7 @@ const patients = require("./patients");
 const admin = require("./admin");
 const feedback = require("./feedback");
 const inquiry = require("./inquiry");
+const automation = require("./automation");
 
 module.exports = {
   users: users,
@@ -12,4 +13,5 @@ module.exports = {
   admin: admin,
   feedback: feedback,
   inquiry: inquiry,
+  automation: automation,
 };
