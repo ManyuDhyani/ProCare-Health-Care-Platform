@@ -8,6 +8,7 @@ import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
 import UpdateStatus from "./UpdateStatus";
 import UpdateStaff from "./UpdateStaff";
+import CustomMessage from "./CustomMessage";
 
 export default function Patients(props) {
   const [rows, setRows] = useState([]); // Use state to store the patient data
@@ -72,6 +73,7 @@ export default function Patients(props) {
                   <TableCell>My ID</TableCell>
                 )}
                 <TableCell>Status</TableCell>
+                <TableCell>Message</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -99,6 +101,13 @@ export default function Patients(props) {
                       <UpdateStatus props={row}></UpdateStatus>
                     </TableCell>
                   )}
+                  <TableCell>{row.StaffMembers[0]}</TableCell>
+                  <TableCell>
+                    <UpdateStatus props={row}></UpdateStatus>
+                  </TableCell>
+                  <TableCell>
+                    <CustomMessage props={row}></CustomMessage>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

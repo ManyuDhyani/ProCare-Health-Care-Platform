@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const patientData = require("./patients");
 
 // Replace these values with your Gmail SMTP details
 const smtpConfig = {
@@ -80,35 +81,43 @@ const feedbackAlert = async (feedback) => {
     to: "hcare.max.18@gmail.com", // list of receivers
     subject: "ProCare: New Feedback", // Subject line
     text: feedback,
-  }
+  };
   transporter.sendMail(mailOptionsFeedback, (error, info) => {
     if (error) {
       return console.error(error);
     }
     console.log("Email sent: " + info.response);
   });
-}
-
+};
 
 // Sending customize message by staff to family
-const customizeAlert = async (message, familyEmails) => {
-  const mailOptionsFeedback = {
-    from: "hcare.max.18@gmail.com", // sender address
-    to: familyEmails, // list of receivers
-    subject: "ProCare: Important update about your Patinet.", // Subject line
-    text: message,
-  }
-  transporter.sendMail(mailOptionsFeedback, (error, info) => {
-    if (error) {
-      return console.error(error);
-    }
-    console.log("Email sent: " + info.response);
+const customizeAlert = async (message, patientId) => {
+  //Fetch all the familyMembers associated to this patient
+  //And send alll of them email about this custom message
+  let familyObj = await patientData.getPatientByID(patientId);
+  console.log(familyObj);
+  let familyArr = familyObj.familyMembers;
+  console.log(familyArr);
+  familyArr.forEach((element) => {
+    const mailOptionsFeedback = {
+      from: "hcare.max.18@gmail.com", // sender address
+      to: element, // list of receivers
+      subject: "ProCare: Important update about your Patinet.", // Subject line
+      text: message,
+    };
+    transporter.sendMail(mailOptionsFeedback, (error, info) => {
+      if (error) {
+        return console.error(error);
+      }
+      console.log("Email sent: " + info.response);
+    });
   });
-}
+};
 
 module.exports = {
   inventoryAlert,
   patientStatusAlert,
   registeredAlert,
   feedbackAlert,
+  customizeAlert,
 };
