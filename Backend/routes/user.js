@@ -7,7 +7,7 @@ router.route("/").get(async (req, res) => {
   //Get all the patients data
   try {
     let getall = await usersData.getAllUsers();
-    console.log(getall);
+    // console.log(getall);
     res.json(getall);
   } catch (e) {
     res.status(e.statusCode).json(e.error);

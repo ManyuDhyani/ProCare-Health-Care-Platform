@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
 import UpdateStatus from "./UpdateStatus";
+import UpdateStaff from "./UpdateStaff";
 import CustomMessage from "./CustomMessage";
 
 export default function Patients(props) {
@@ -29,11 +30,11 @@ export default function Patients(props) {
       let FilteredData;
       if (user.type === "F") {
         FilteredData = patients.filter((item) =>
-          item.newObj.familyMembers.includes(user.userID)
+          item.familyMembers.includes(user.userID)
         );
       } else if (user.type === "S") {
         FilteredData = patients.filter((item) =>
-          item.newObj.StaffMembers.includes(user.userID)
+          item.StaffMembers.includes(user.userID)
         );
       } else if (user.type === "A") {
         FilteredData = patients;
@@ -65,7 +66,12 @@ export default function Patients(props) {
                 <TableCell>Name</TableCell>
                 <TableCell>Diagnosis</TableCell>
                 <TableCell>Medications</TableCell>
-                <TableCell>Staff</TableCell>
+                {(props.userObj && props.userObj.type == "A") ||
+                props.userObj.type == "F" ? (
+                  <TableCell>Staff</TableCell>
+                ) : (
+                  <TableCell>My ID</TableCell>
+                )}
                 <TableCell>Status</TableCell>
                 <TableCell>Message</TableCell>
               </TableRow>
@@ -76,6 +82,25 @@ export default function Patients(props) {
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.diagnosis}</TableCell>
                   <TableCell>{row.medication}</TableCell>
+                  {props.userObj.type === "A" ? (
+                    // Render status directly for user type "F"
+                    // Render UpdateStatus component for user types "S" and "A"
+                    <TableCell>
+                      <UpdateStaff props={row}></UpdateStaff>
+                    </TableCell>
+                  ) : (
+                    <TableCell>{row.StaffMembers[0]}</TableCell>
+                  )}
+
+                  {props.userObj.type === "F" ? (
+                    // Render status directly for user type "F"
+                    <TableCell>{row.status}</TableCell>
+                  ) : (
+                    // Render UpdateStatus component for user types "S" and "A"
+                    <TableCell>
+                      <UpdateStatus props={row}></UpdateStatus>
+                    </TableCell>
+                  )}
                   <TableCell>{row.StaffMembers[0]}</TableCell>
                   <TableCell>
                     <UpdateStatus props={row}></UpdateStatus>
