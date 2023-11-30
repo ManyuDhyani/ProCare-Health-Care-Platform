@@ -52,6 +52,7 @@ export default function Dashboard() {
                     display: "flex",
                     flexDirection: "column",
                     height: 240,
+                    width: 1250,
                     overflow: "auto",
                   }}
                 >

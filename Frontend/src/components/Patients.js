@@ -9,6 +9,7 @@ import styles from "../css/Addmedicine.module.css";
 import UpdateStatus from "./UpdateStatus";
 import UpdateStaff from "./UpdateStaff";
 import CustomMessage from "./CustomMessage";
+import UpdateFamily from "./UpdateFamily";
 
 export default function Patients(props) {
   const [rows, setRows] = useState([]); // Use state to store the patient data
@@ -74,6 +75,9 @@ export default function Patients(props) {
                 )}
                 <TableCell>Status</TableCell>
                 <TableCell>Message</TableCell>
+                {props.userObj && props.userObj.type == "A" ? (
+                  <TableCell>Family</TableCell>
+                ) : null}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -104,6 +108,10 @@ export default function Patients(props) {
                   <TableCell>
                     <CustomMessage props={row}></CustomMessage>
                   </TableCell>
+                  {props.userObj.type === "A" ? (
+                    // Render status directly for user type "F"
+                    <UpdateFamily props={row}></UpdateFamily>
+                  ) : null}
                 </TableRow>
               ))}
             </TableBody>

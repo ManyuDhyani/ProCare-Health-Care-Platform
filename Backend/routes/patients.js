@@ -115,4 +115,43 @@ router.route("/SF/:patientID").post(async (req, res) => {
   }
 });
 
+router.route("/F/:patientID").post(async (req, res) => {
+  try {
+    console.log("here");
+    let pId = req.params.patientID;
+    let {
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      familyMembers,
+      status,
+    } = req.body;
+    console.log(
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      familyMembers,
+      status
+    );
+
+    const getUpdatedPatient = await patientData.updatePatientFamily(
+      pId,
+      name,
+      dataofBirth,
+      diagnosis,
+      medication,
+      admissionDate,
+      familyMembers,
+      status
+    );
+    res.json(getUpdatedPatient);
+  } catch (e) {
+    res.status(e.statusCode).json(e.error);
+  }
+});
+
 module.exports = router;

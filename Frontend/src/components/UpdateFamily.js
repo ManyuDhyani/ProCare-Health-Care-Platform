@@ -13,23 +13,23 @@ import styles from "../css/Addmedicine.module.css";
 
 import "../App.css";
 
-export default function UpdateStaff(props) {
+export default function UpdateFamily(props) {
   const [open, setOpen] = useState(false);
-  const [healthStaff, setHealthStaff] = useState(""); // Added state for health status
-  const [staff, setStaff] = useState([]);
-  const staff_members = async () => {
+  const [healthFamily, setHealthFamily] = useState(""); // Added state for health status
+  const [family, setFamily] = useState([]);
+  const family_members = async () => {
     const temp = await axios.get("http://localhost:8000/user");
-    let staff_array = [];
+    let family_array = [];
     for (let i = 0; i < temp.data.length; i++) {
-      if (temp.data[i].type === "S") {
-        staff_array.push(temp.data[i]);
+      if (temp.data[i].type === "F") {
+        family_array.push(temp.data[i]);
       }
     }
     // console.log("ARRA", staff_array);
-    setStaff(staff_array);
+    setFamily(family_array);
   };
 
-  console.log("Staff", staff);
+  console.log("Family", family);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,22 +39,22 @@ export default function UpdateStaff(props) {
     setOpen(false);
   };
 
-  const handleStaffChange = (event) => {
-    setHealthStaff(event.target.value);
+  const handleFamilyChange = (event) => {
+    setHealthFamily(event.target.value);
   };
-  console.log("HEALTH STAFF", healthStaff);
+  console.log("HEALTH FAM", healthFamily);
 
   const handleSubmit = () => {
-    if (!healthStaff) {
+    if (!healthFamily) {
       alert("Please fill in all the fields");
     } else {
-      axios.post(`http://localhost:8000/patient/SF/${props.props._id}`, {
+      axios.post(`http://localhost:8000/patient/F/${props.props._id}`, {
         name: props.props.name,
         dataofBirth: props.props.dataofBirth,
         diagnosis: props.props.diagnosis,
         medication: props.props.medication,
         admissionDate: props.props.admissionDate,
-        StaffMembers: healthStaff,
+        familyMembers: healthFamily,
         status: props.props.status,
       });
       //   console.log(props.props);
@@ -65,25 +65,25 @@ export default function UpdateStaff(props) {
   };
 
   useEffect(() => {
-    staff_members();
+    family_members();
   }, []);
 
   return (
     <div className={styles.Addmedicine}>
-      <Button onClick={handleClickOpen}>{props.props.StaffMembers[0]}</Button>
+      <Button onClick={handleClickOpen}>{props.props.familyMembers[0]}</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update</DialogTitle>
         <DialogContent>
           <DialogContentText>Please update status</DialogContentText>
           <Select
-            value={healthStaff}
-            onChange={handleStaffChange}
-            label="Health Staff"
+            value={healthFamily}
+            onChange={handleFamilyChange}
+            label="Health Family"
             fullWidth
             variant="standard"
             required
           >
-            {staff.map((option, index) => (
+            {family.map((option, index) => (
               <MenuItem key={index} value={option._id}>
                 {option.email}
               </MenuItem>
