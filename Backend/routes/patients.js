@@ -49,6 +49,7 @@ router
   })
   .post(async (req, res) => {
     try {
+      console.log("here");
       let pId = req.params.patientID;
       let { name, dataofBirth, diagnosis, medication, admissionDate, status } =
         req.body;

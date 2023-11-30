@@ -6,6 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
+import UpdateStatus from "./UpdateStatus";
 
 export default function Patients(props) {
   const [rows, setRows] = useState([]); // Use state to store the patient data
@@ -74,7 +75,9 @@ export default function Patients(props) {
                   <TableCell>{row.diagnosis}</TableCell>
                   <TableCell>{row.medication}</TableCell>
                   <TableCell>{row.StaffMembers[0]}</TableCell>
-                  <TableCell>{row.status}</TableCell>
+                  <TableCell>
+                    <UpdateStatus props={row}></UpdateStatus>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -114,18 +114,19 @@ const updatePatient = async (
   //Get the patient first
   let fectchObj = await getPatientByID(patientId);
 
-  if (fectchObj.status !== status) {
-    //Before we automate we will need to get all the familyMem IDs and Staff Mem Ids
-    //For each IDs we need to fetch their data and get their email IDS
-    // And the for each Email IDs we will call this automation function to send email
-    let familyMebArr = fectchObj.newObj.familyMembers;
-    let StaffMemArr = fectchObj.newObj.StaffMembers;
-    let AllUsersArr = familyMebArr.concat(StaffMemArr);
-    AllUsersArr.forEach(async (elem) => {
-      let emailId = usersData.getUserEmailByID(elem);
-      await automation.patientStatusAlert(emailId, status);
-    });
-  }
+  // if (fectchObj.status !== status) {
+  //   //Before we automate we will need to get all the familyMem IDs and Staff Mem Ids
+  //   //For each IDs we need to fetch their data and get their email IDS
+  //   // And the for each Email IDs we will call this automation function to send email
+
+  //   let familyMebArr = fectchObj.newObj.familyMembers;
+  //   let StaffMemArr = fectchObj.newObj.StaffMembers;
+  //   let AllUsersArr = familyMebArr.concat(StaffMemArr);
+  //   // AllUsersArr.forEach(async (elem) => {
+  //   //   let emailId = usersData.getUserEmailByID(elem);
+  //   //   await automation.patientStatusAlert(emailId, status);
+  //   // });
+  // }
 
   let newObj = {
     name: name,
@@ -168,6 +169,18 @@ const updatePatient = async (
   fetchPatientAgain._id = fetchPatientAgain._id.toString();
   return fetchPatientAgain;
 };
+
+const updatePatientStaff = async (
+  patientId,
+  name,
+  dataofBirth,
+  diagnosis,
+  medication,
+  admissionDate,
+  familyMembers,
+  StaffMembers,
+  status
+) => {};
 
 module.exports = {
   createPatient,
