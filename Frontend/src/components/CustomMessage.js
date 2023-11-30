@@ -9,7 +9,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
 
-export default function CustomMessage() {
+export default function CustomMessage(props) {
+  console.log(props.props._id);
   const [open, setOpen] = useState(false);
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -25,7 +26,13 @@ export default function CustomMessage() {
     setOpen(false);
   };
 
-  const handlesubmit = (e) => {};
+  const handlesubmit = (e) => {
+    let m = document.getElementById("message").value;
+    const message = axios.post("http://localhost:8000/automation", {
+      patientId: props.props._id,
+      message: m,
+    });
+  };
 
   return (
     <div className={styles.Addpatient}>
