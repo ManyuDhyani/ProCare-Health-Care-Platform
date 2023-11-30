@@ -101,10 +101,6 @@ export default function Patients(props) {
                       <UpdateStatus props={row}></UpdateStatus>
                     </TableCell>
                   )}
-                  <TableCell>{row.StaffMembers[0]}</TableCell>
-                  <TableCell>
-                    <UpdateStatus props={row}></UpdateStatus>
-                  </TableCell>
                   <TableCell>
                     <CustomMessage props={row}></CustomMessage>
                   </TableCell>
