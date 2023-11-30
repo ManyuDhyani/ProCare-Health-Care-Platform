@@ -13,7 +13,6 @@ import Feedback from "./Feedback";
 import FeedbackData from "./FeedbackData";
 import Inquiry from "./Inquiry";
 import InquiryData from "./InquiryData";
-import UpdateStatus from "./UpdateStatus";
 const defaultTheme = createTheme();
 
 function preventDefault(event) {
