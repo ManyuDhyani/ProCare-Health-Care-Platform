@@ -43,7 +43,7 @@ export default function UpdateType(props) {
     if (!type) {
       alert("Please fill in all the fields");
     } else {
-      axios.post(`http://localhost:8000/user/${props.props.row._id}`, {
+      axios.post(`http://localhost:8000/user/T/${props.props.row._id}`, {
         type: type,
       });
       //   console.log("JUST CHECKING", props.props);

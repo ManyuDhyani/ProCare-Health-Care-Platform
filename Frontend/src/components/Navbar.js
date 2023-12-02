@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import AddMedicine from "./AddMedicine";
 import Addpatient from "./Addpatient";
+import UpdateProfile from "./UpdateProfile";
 
 export default function Navbar() {
   const location = useLocation();
@@ -26,6 +27,9 @@ export default function Navbar() {
           Hello {uname}
         </Typography>
         <div style={{ flexGrow: 1 }}></div>
+        {(inventory_flag === "S" || inventory_flag === "F") && (
+          <UpdateProfile props={location.state.user} />
+        )}
         {(inventory_flag === "S" || inventory_flag === "A") && <AddMedicine />}
         {inventory_flag === "A" && <Addpatient />}
         {uname !== null && (
