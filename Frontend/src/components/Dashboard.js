@@ -78,22 +78,6 @@ export default function Dashboard() {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              {user.type == "F" && (
-                <Grid item xs={12} md={4} lg={3}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 240,
-                      overflow: "auto",
-                    }}
-                  >
-                    {/* <Inventory /> */}
-                    <Feedback UID={user.userID} />
-                  </Paper>
-                </Grid>
-              )}
 
               {/* Recent Orders */}
               {(user.type == "S" || user.type == "A") && (
@@ -146,6 +130,22 @@ export default function Dashboard() {
                     }}
                   >
                     <Inquiry userObj={user}></Inquiry>
+                  </Paper>
+                </Grid>
+              )}
+              {user.type == "F" && (
+                <Grid item xs={12} md={4} lg={3}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 240,
+                      overflow: "auto",
+                    }}
+                  >
+                    {/* <Inventory /> */}
+                    <Feedback UID={user.userID} />
                   </Paper>
                 </Grid>
               )}

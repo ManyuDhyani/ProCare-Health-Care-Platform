@@ -15,8 +15,12 @@ import DeleteMedicine from "./DeleteMedicine";
 export default function Inventory(props) {
   const [data, setData] = useState(0);
   const [nullmed, setNullmed] = useState(false);
+  const [ud, setUd] = useState(false);
+  const [us, setUs] = useState(false);
   const getdata = async () => {
     setNullmed(false);
+    setUd(false);
+    setUs(false);
     let inv = await axios.get("http://localhost:8000/inventory");
     if (props.props.user_type !== "A") inv.data = inv.data.slice(0, 5);
     if (inv.data.message == "No Medicines") setNullmed(true);
@@ -27,7 +31,7 @@ export default function Inventory(props) {
   // console.log(data);
   useEffect(() => {
     getdata();
-  }, []);
+  }, [ud, us]);
 
   return (
     <React.Fragment>
@@ -51,12 +55,12 @@ export default function Inventory(props) {
                   <TableCell>{row.mg}</TableCell>
                   <TableCell>{row.exp_date}</TableCell>
                   <TableCell>
-                    <UpdateMedicine props={row}></UpdateMedicine>
+                    <UpdateMedicine props={{ row, us, setUs }}></UpdateMedicine>
                   </TableCell>
                   <TableCell>{row.threshold}</TableCell>
                   <TableCell>{row.remark}</TableCell>
                   <TableCell>
-                    <DeleteMedicine props={row._id}></DeleteMedicine>
+                    <DeleteMedicine props={{ row, ud, setUd }}></DeleteMedicine>
                   </TableCell>
                 </TableRow>
               ))}

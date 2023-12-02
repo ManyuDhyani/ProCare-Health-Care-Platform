@@ -183,6 +183,56 @@ const updateUserType = async (userID, userType) => {
   return fetchUser1;
 };
 
+const updateUserProfile = async (userID, email, phoneNumber) => {
+  console.log("inside update user profile", userID, email, phoneNumber);
+  userID = userID.trim();
+
+  const userCollections = await user_collection();
+  if (!ObjectId.isValid(userID)) {
+    throw { statusCode: 400, error: "User ID is not a valid object ID" };
+  }
+  let ID = ObjectId(userID);
+  let fetchUser = await userCollections.findOne({
+    _id: ID,
+  });
+  if (!fetchUser) {
+    throw {
+      statusCode: 404,
+      error: "No User with the given ID present in the Database",
+    };
+  }
+  console.log(fetchUser);
+  // fetchUser._id = fetchUser._id.toString();
+  if (fetchUser.email !== email || fetchUser.phoneNumber !== phoneNumber) {
+    //   // update the userType
+    let newObj = {
+      email: email,
+      phoneNumber: phoneNumber,
+    };
+    const result = await userCollections.updateOne(
+      { _id: fetchUser._id }, // Assuming userId is a MongoDB ObjectId
+      { $set: newObj }
+    );
+
+    if (result.modifiedCount === 1) {
+      console.log(`User with ID ${userID} successfully updated.`);
+    } else {
+      console.log(`Update for User with ID ${userID} failed.`);
+      throw {
+        statusCode: 404,
+        error: "User could not be updated",
+      };
+    }
+  } else {
+    console.log("Same user details selected again");
+  }
+  let fetchUser1 = await userCollections.findOne({
+    _id: ID,
+  });
+  fetchUser1._id = fetchUser1._id.toString();
+  return fetchUser1;
+};
+
 module.exports = {
   createUser,
   checkUser,
@@ -191,4 +241,5 @@ module.exports = {
   getAllUsers,
   getUserEmailByID,
   updateUserType,
+  updateUserProfile,
 };

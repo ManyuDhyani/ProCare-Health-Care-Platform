@@ -11,9 +11,9 @@ import styles from "../css/Addmedicine.module.css";
 
 import "../App.css";
 
-export default function UpdateMedicine(props) {
+export default function UpdateProfile(props) {
   const [open, setOpen] = useState(false);
-  const { row, us, setUs } = props.props;
+  const user = props.props;
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -24,39 +24,53 @@ export default function UpdateMedicine(props) {
 
   // console.log(props.props._id);
   const handlesubmit = () => {
-    const current_stock = document.getElementById("current_stock").value;
+    const email = document.getElementById("email").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
 
-    if (!current_stock) {
+    if (!email || !phoneNumber) {
       alert("Please fill the all the fields");
     } else {
-      axios.post("http://localhost:8000/update", {
-        current_stock,
-        threshold: props.props.row.threshold,
-        _id: props.props.row._id,
+      axios.post("http://localhost:8000/user/updateProfile", {
+        userID: user.userID,
+        email: email,
+        phoneNumber: phoneNumber,
       });
-      setUs(true);
+      // console.log("updateProfile Check", email, phoneNumber);
+      // console.log(user);
       setOpen(false);
-      alert("Stock updated successfully");
+      alert("Profile updated successfully");
     }
+    // setUs(true);
   };
 
   return (
     <div className={styles.Addmedicine}>
-      <Button onClick={handleClickOpen}>{row && row.current_stock}</Button>
+      <Button onClick={handleClickOpen}>Change Email/PhoneNumber</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please update stock</DialogContentText>
+          <DialogContentText>Please update profile</DialogContentText>
 
           <TextField
             autoFocus
             margin="dense"
-            id="current_stock"
-            label="Current Stock"
-            type="number"
+            id="email"
+            label="Email"
+            type="string"
             fullWidth
             variant="standard"
             required
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="phoneNumber"
+            label="Phone Number"
+            type="string"
+            fullWidth
+            variant="standard"
+            required
+            inputProps={{ maxLength: 10 }}
           />
         </DialogContent>
         <DialogActions>
