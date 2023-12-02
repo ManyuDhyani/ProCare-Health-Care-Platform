@@ -74,9 +74,9 @@ export default function UpdateType(props) {
             variant="standard"
             required
           >
-            <MenuItem value="A">A</MenuItem>
-            <MenuItem value="S">S</MenuItem>
-            <MenuItem value="F">F</MenuItem>
+            <MenuItem value="A">Admin</MenuItem>
+            <MenuItem value="S">Staff</MenuItem>
+            <MenuItem value="F">Family</MenuItem>
           </Select>
         </DialogContent>
         <DialogActions>
