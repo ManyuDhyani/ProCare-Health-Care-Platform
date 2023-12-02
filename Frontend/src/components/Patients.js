@@ -13,10 +13,15 @@ import UpdateFamily from "./UpdateFamily";
 
 export default function Patients(props) {
   const [rows, setRows] = useState([]); // Use state to store the patient data
-
+  const [usr, setUSR] = useState(false);
+  const [ufr, setUFR] = useState(false);
+  const [ustatusr, setUstatusR] = useState(false);
   // Function to fetch patient data and set it in the state
   const getPatientdata = async () => {
     try {
+      setUSR(false);
+      setUFR(false);
+      setUstatusR(false);
       let user = props.userObj;
       const response = await axios.get("http://localhost:8000/patient/");
       const patients = response.data;
@@ -55,7 +60,8 @@ export default function Patients(props) {
 
   useEffect(() => {
     getPatientdata(); // Fetch patient data when the component mounts
-  }, []);
+    console.log("USE EFFECT", usr);
+  }, [usr, ufr, ustatusr]);
 
   return (
     <React.Fragment>
@@ -69,14 +75,14 @@ export default function Patients(props) {
                 <TableCell>Medications</TableCell>
                 {(props.userObj && props.userObj.type == "A") ||
                 props.userObj.type == "F" ? (
-                  <TableCell>Staff</TableCell>
+                  <TableCell>Staff ID</TableCell>
                 ) : (
                   <TableCell>My ID</TableCell>
                 )}
                 <TableCell>Status</TableCell>
                 <TableCell>Message</TableCell>
                 {props.userObj && props.userObj.type == "A" ? (
-                  <TableCell>Family</TableCell>
+                  <TableCell>Family ID</TableCell>
                 ) : null}
               </TableRow>
             </TableHead>
@@ -90,7 +96,7 @@ export default function Patients(props) {
                     // Render status directly for user type "F"
                     // Render UpdateStatus component for user types "S" and "A"
                     <TableCell>
-                      <UpdateStaff props={row}></UpdateStaff>
+                      <UpdateStaff props={{ row, usr, setUSR }}></UpdateStaff>
                     </TableCell>
                   ) : (
                     <TableCell>{row.StaffMembers[0]}</TableCell>
@@ -102,7 +108,9 @@ export default function Patients(props) {
                   ) : (
                     // Render UpdateStatus component for user types "S" and "A"
                     <TableCell>
-                      <UpdateStatus props={row}></UpdateStatus>
+                      <UpdateStatus
+                        props={{ row, ustatusr, setUstatusR }}
+                      ></UpdateStatus>
                     </TableCell>
                   )}
                   <TableCell>
@@ -110,7 +118,9 @@ export default function Patients(props) {
                   </TableCell>
                   {props.userObj.type === "A" ? (
                     // Render status directly for user type "F"
-                    <UpdateFamily props={row}></UpdateFamily>
+                    <React.Fragment>
+                      <UpdateFamily props={{ row, ufr, setUFR }}></UpdateFamily>
+                    </React.Fragment>
                   ) : null}
                 </TableRow>
               ))}

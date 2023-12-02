@@ -14,4 +14,19 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+router.route("/:userID").post(async (req, res) => {
+  //Get all the patients data
+  try {
+    console.log("inside type update route");
+    let pId = req.params.userID;
+    let type = req.body.type;
+    console.log("type = ", type);
+    let updated = await usersData.updateUserType(pId, type);
+    console.log(updated);
+    res.json(updated);
+  } catch (e) {
+    res.status(e.statusCode).json(e.error);
+  }
+});
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -13,10 +13,18 @@ import styles from "../css/Addmedicine.module.css";
 
 import "../App.css";
 
-export default function UpdateStatus(props) {
-  const { row, ustatusr, setUstatusR } = props.props;
+export default function UpdateType(props) {
+  const { row, utr, setUTR } = props.props;
   const [open, setOpen] = useState(false);
-  const [healthStatus, setHealthStatus] = useState(""); // Added state for health status
+  const [type, setType] = useState(""); // Added state for health status
+  const [userdata, setUserdata] = useState([]);
+  const users = async () => {
+    const temp = await axios.get("http://localhost:8000/user");
+    let user1 = temp.data;
+    // console.log(user1);
+    setUserdata(user1);
+    // console.log("ARRA", staff_array);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,47 +34,49 @@ export default function UpdateStatus(props) {
     setOpen(false);
   };
 
-  const handleStatusChange = (event) => {
-    setHealthStatus(event.target.value);
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
   };
+  //   console.log("HEALTH FAM", healthFamily);
 
   const handleSubmit = () => {
-    if (!healthStatus) {
+    if (!type) {
       alert("Please fill in all the fields");
     } else {
-      axios.post(`http://localhost:8000/patient/${props.props.row._id}`, {
-        name: props.props.row.name,
-        dataofBirth: props.props.row.dataofBirth,
-        diagnosis: props.props.row.diagnosis,
-        medication: props.props.row.medication,
-        admissionDate: props.props.row.admissionDate,
-        status: healthStatus,
+      axios.post(`http://localhost:8000/user/${props.props.row._id}`, {
+        type: type,
       });
-      console.log(props.props);
-      setUstatusR(true);
+      //   console.log("JUST CHECKING", props.props);
+      setUTR(true);
       setOpen(false);
       alert("Status updated successfully");
     }
   };
 
+  useEffect(() => {
+    users();
+  }, []);
+
   return (
     <div className={styles.Addmedicine}>
-      <Button onClick={handleClickOpen}>{props.props.row.status}</Button>
+      <Button onClick={handleClickOpen}>
+        {props && props.props.row.type ? props.props.row.type : "assign"}
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please update status</DialogContentText>
+          <DialogContentText>Please update type</DialogContentText>
           <Select
-            value={healthStatus}
-            onChange={handleStatusChange}
-            label="Health Status"
+            value={type}
+            onChange={handleTypeChange}
+            label="Type"
             fullWidth
             variant="standard"
             required
           >
-            <MenuItem value="Healthy">Healthy</MenuItem>
-            <MenuItem value="Moderate">Moderate</MenuItem>
-            <MenuItem value="Critical">Critical</MenuItem>
+            <MenuItem value="A">A</MenuItem>
+            <MenuItem value="S">S</MenuItem>
+            <MenuItem value="F">F</MenuItem>
           </Select>
         </DialogContent>
         <DialogActions>

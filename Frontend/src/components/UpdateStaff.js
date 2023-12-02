@@ -14,6 +14,7 @@ import styles from "../css/Addmedicine.module.css";
 import "../App.css";
 
 export default function UpdateStaff(props) {
+  const { row, usr, setUSR } = props.props;
   const [open, setOpen] = useState(false);
   const [healthStaff, setHealthStaff] = useState(""); // Added state for health status
   const [staff, setStaff] = useState([]);
@@ -29,7 +30,7 @@ export default function UpdateStaff(props) {
     setStaff(staff_array);
   };
 
-  console.log("Staff", staff);
+  // console.log("Staff", staff);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,25 +43,28 @@ export default function UpdateStaff(props) {
   const handleStaffChange = (event) => {
     setHealthStaff(event.target.value);
   };
-  console.log("HEALTH STAFF", healthStaff);
+  // console.log("HEALTH STAFF", healthStaff);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!healthStaff) {
       alert("Please fill in all the fields");
     } else {
-      axios.post(`http://localhost:8000/patient/SF/${props.props._id}`, {
-        name: props.props.name,
-        dataofBirth: props.props.dataofBirth,
-        diagnosis: props.props.diagnosis,
-        medication: props.props.medication,
-        admissionDate: props.props.admissionDate,
-        StaffMembers: healthStaff,
-        status: props.props.status,
-      });
+      await axios.post(
+        `http://localhost:8000/patient/SF/${props.props.row._id}`,
+        {
+          name: props.props.row.name,
+          dataofBirth: props.props.row.dataofBirth,
+          diagnosis: props.props.row.diagnosis,
+          medication: props.props.row.medication,
+          admissionDate: props.props.row.admissionDate,
+          StaffMembers: healthStaff,
+          status: props.props.row.status,
+        }
+      );
       //   console.log(props.props);
-
+      await setUSR(true);
       setOpen(false);
-      alert("Status updated successfully");
+      alert("Staff updated successfully");
     }
   };
 
@@ -70,11 +74,15 @@ export default function UpdateStaff(props) {
 
   return (
     <div className={styles.Addmedicine}>
-      <Button onClick={handleClickOpen}>{props.props.StaffMembers[0]}</Button>
+      <Button onClick={handleClickOpen}>
+        {props && props.props.row.StaffMembers[0]
+          ? props.props.row.StaffMembers[0]
+          : "assign"}
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please update status</DialogContentText>
+          <DialogContentText>Please update Staff</DialogContentText>
           <Select
             value={healthStaff}
             onChange={handleStaffChange}

@@ -13,6 +13,7 @@ import Feedback from "./Feedback";
 import FeedbackData from "./FeedbackData";
 import Inquiry from "./Inquiry";
 import InquiryData from "./InquiryData";
+import AllUsers from "./AllUsers";
 const defaultTheme = createTheme();
 
 function preventDefault(event) {
@@ -42,6 +43,23 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            {user.type == "A" && (
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                    width: 1250,
+                    overflow: "auto",
+                  }}
+                >
+                  <AllUsers userObj={user} />
+                </Paper>
+              </Grid>
+            )}
+
             <h1>{user.type == "A" && "All "}Patients</h1>
             <Grid container spacing={3}>
               {/* Chart */}
