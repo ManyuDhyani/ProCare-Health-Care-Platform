@@ -14,6 +14,7 @@ import styles from "../css/Addmedicine.module.css";
 import "../App.css";
 
 export default function UpdateFamily(props) {
+  const { row, ufr, setUFR } = props.props;
   const [open, setOpen] = useState(false);
   const [healthFamily, setHealthFamily] = useState(""); // Added state for health status
   const [family, setFamily] = useState([]);
@@ -29,7 +30,7 @@ export default function UpdateFamily(props) {
     setFamily(family_array);
   };
 
-  console.log("Family", family);
+  // console.log("Family", family);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,25 +43,28 @@ export default function UpdateFamily(props) {
   const handleFamilyChange = (event) => {
     setHealthFamily(event.target.value);
   };
-  console.log("HEALTH FAM", healthFamily);
+  // console.log("HEALTH FAM", healthFamily);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!healthFamily) {
       alert("Please fill in all the fields");
     } else {
-      axios.post(`http://localhost:8000/patient/F/${props.props._id}`, {
-        name: props.props.name,
-        dataofBirth: props.props.dataofBirth,
-        diagnosis: props.props.diagnosis,
-        medication: props.props.medication,
-        admissionDate: props.props.admissionDate,
-        familyMembers: healthFamily,
-        status: props.props.status,
-      });
-      //   console.log(props.props);
+      await axios.post(
+        `http://localhost:8000/patient/F/${props.props.row._id}`,
+        {
+          name: props.props.row.name,
+          dataofBirth: props.props.row.dataofBirth,
+          diagnosis: props.props.row.diagnosis,
+          medication: props.props.row.medication,
+          admissionDate: props.props.row.admissionDate,
+          familyMembers: healthFamily,
+          status: props.props.row.status,
+        }
+      );
 
+      setUFR(true);
       setOpen(false);
-      alert("Status updated successfully");
+      alert("Family updated successfully");
     }
   };
 
@@ -70,11 +74,15 @@ export default function UpdateFamily(props) {
 
   return (
     <div className={styles.Addmedicine}>
-      <Button onClick={handleClickOpen}>{props.props.familyMembers[0]}</Button>
+      <Button onClick={handleClickOpen}>
+        {props && props.props.row.familyMembers[0]
+          ? props.props.row.familyMembers[0]
+          : "assign"}
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Update</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please update status</DialogContentText>
+          <DialogContentText>Please update Family</DialogContentText>
           <Select
             value={healthFamily}
             onChange={handleFamilyChange}

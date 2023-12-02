@@ -21,8 +21,8 @@ export default function InquiryData(props) {
     // );
     let FilteredData = patientData.data.filter((item) => {
       // Check if item.newObj is defined before accessing StaffMembers
-      if (item.newObj && item.newObj.StaffMembers) {
-        return item.newObj.StaffMembers.includes(user.userID);
+      if (item && item.StaffMembers) {
+        return item.StaffMembers.includes(user.userID);
       }
       // If item.newObj or item.newObj.StaffMembers is undefined, skip the check
       return false;

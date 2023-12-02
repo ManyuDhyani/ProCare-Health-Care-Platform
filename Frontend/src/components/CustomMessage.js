@@ -10,7 +10,7 @@ import axios from "axios";
 import styles from "../css/Addmedicine.module.css";
 
 export default function CustomMessage(props) {
-  console.log(props.props._id);
+  // console.log(props.props._id);
   const [open, setOpen] = useState(false);
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();

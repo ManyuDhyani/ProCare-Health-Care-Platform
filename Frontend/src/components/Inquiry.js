@@ -30,10 +30,10 @@ export default function Inquiry(props) {
       const patients = response.data;
       let temp_array = [];
       for (let i = 0; i < patients.length; i++) {
-        if (patients[i].newObj.familyMembers.includes(current_user.userID)) {
+        if (patients[i].familyMembers.includes(current_user.userID)) {
           temp_array.push({
             id: patients[i]._id.toString(),
-            name: patients[i].newObj.name,
+            name: patients[i].name,
           });
           console.log("temP", temp_array);
         }
