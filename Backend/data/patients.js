@@ -138,23 +138,23 @@ const updatePatient = async (
     StaffMembers: fectchObj.StaffMembers,
     status: status,
   };
-
   const patientsCollections = await patients();
-  const result = await patientsCollections.updateOne(
-    { _id: ObjectId(patientId) }, // Assuming patientId is a MongoDB ObjectId
-    { $set: newObj }
-  );
+  if (fectchObj.status !== status) {
+    const result = await patientsCollections.updateOne(
+      { _id: ObjectId(patientId) }, // Assuming patientId is a MongoDB ObjectId
+      { $set: newObj }
+    );
 
-  if (result.modifiedCount === 1) {
-    console.log(`Patient with ID ${patientId} successfully updated.`);
-  } else {
-    console.log(`Update for patient with ID ${patientId} failed.`);
-    throw {
-      statusCode: 404,
-      error: "Patient could not be updated",
-    };
+    if (result.modifiedCount === 1) {
+      console.log(`Patient with ID ${patientId} successfully updated.`);
+    } else {
+      console.log(`Update for patient with ID ${patientId} failed.`);
+      throw {
+        statusCode: 404,
+        error: "Patient could not be updated",
+      };
+    }
   }
-
   //Fetch again
   let ID = ObjectId(patientId);
   let fetchPatientAgain = await patientsCollections.findOne({
