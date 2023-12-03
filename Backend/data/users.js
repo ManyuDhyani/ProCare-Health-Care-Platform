@@ -123,16 +123,17 @@ const getAllUsers = async () => {
 
 const getUserEmailByID = async (userId) => {
   //email = email.trim();
-  userId = userId.trim();
+  console.log("Inside getUserEmailById", userId);
   const userCollections = await user_collection();
-  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) })
-    .email;
+  console.log("getUserEmailById", 1);
+  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) });
+  console.log(getEmailID.email);
   if (!getEmailID) {
     throw { statusCode: 400, error: "No User Found" };
   }
-
+  console.log("getUserEmailById", 2);
   console.log(getEmailID);
-  return getEmailID;
+  return getEmailID.email;
 };
 
 const updateUserType = async (userID, userType) => {
@@ -162,6 +163,13 @@ const updateUserType = async (userID, userType) => {
     const result = await userCollections.updateOne(
       { _id: fetchUser._id }, // Assuming userId is a MongoDB ObjectId
       { $set: newObj }
+    );
+
+    //Send an email here
+    //let emaiId = await getUserEmailByID(fetchUser._id);
+    const xyz = await registerAlert.userTypeUpdateAlert(
+      fetchUser.email,
+      userType
     );
 
     if (result.modifiedCount === 1) {

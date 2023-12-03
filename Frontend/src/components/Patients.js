@@ -80,7 +80,7 @@ export default function Patients(props) {
                   <TableCell>My ID</TableCell>
                 )}
                 <TableCell>Status</TableCell>
-                <TableCell>Message</TableCell>
+                {props.userObj.type === "S" && <TableCell>Message</TableCell>}
                 {props.userObj && props.userObj.type == "A" ? (
                   <TableCell>Family ID</TableCell>
                 ) : null}
@@ -113,9 +113,11 @@ export default function Patients(props) {
                       ></UpdateStatus>
                     </TableCell>
                   )}
-                  <TableCell>
-                    <CustomMessage props={row}></CustomMessage>
-                  </TableCell>
+                  {props.userObj.type === "S" && (
+                    <TableCell>
+                      <CustomMessage props={row}></CustomMessage>
+                    </TableCell>
+                  )}
                   {props.userObj.type === "A" ? (
                     // Render status directly for user type "F"
                     <React.Fragment>

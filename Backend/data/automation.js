@@ -1,5 +1,8 @@
+const mongoCollections = require("../Config/mongoCollections");
 const nodemailer = require("nodemailer");
 const patientData = require("./patients");
+const user_collection = mongoCollections.users;
+let { ObjectId } = require("mongodb");
 
 // Replace these values with your Gmail SMTP details
 const smtpConfig = {
@@ -74,6 +77,32 @@ const registeredAlert = async (emailId) => {
   });
 };
 
+const userTypeUpdateAlert = async (emailId, userType) => {
+  // sending email to registered users
+  let type;
+  if (userType === "S") {
+    type = "Staff Member";
+  } else if (userType === "F") {
+    type = "Family Member";
+  } else if (userType === "A") {
+    type = "Admin";
+  }
+
+  const messg = `Your account has been activated for${emailId} and you have been registered as ${type}`;
+  const mailOptionsRegister = {
+    from: "hcare.max.18@gmail.com", // sender address
+    to: emailId, // list of receivers
+    subject: "ProCare: Registration Successful", // Subject line
+    text: messg,
+  };
+  transporter.sendMail(mailOptionsRegister, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
+};
+
 // Email for feedback to company
 const feedbackAlert = async (feedback) => {
   const mailOptionsFeedback = {
@@ -90,27 +119,41 @@ const feedbackAlert = async (feedback) => {
   });
 };
 
+const getUserEmailByID = async (userId) => {
+  //email = email.trim();
+  console.log("Inside getUserEmailById", userId);
+  const userCollections = await user_collection();
+  console.log("getUserEmailById", 1);
+  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) });
+  console.log(getEmailID.email);
+  if (!getEmailID) {
+    throw { statusCode: 400, error: "No User Found" };
+  }
+  console.log("getUserEmailById", 2);
+  console.log(getEmailID);
+  return getEmailID.email;
+};
+
 // Sending customize message by staff to family
 const customizeAlert = async (message, patientId) => {
   //Fetch all the familyMembers associated to this patient
   //And send alll of them email about this custom message
   let familyObj = await patientData.getPatientByID(patientId);
   console.log(familyObj);
-  let familyArr = familyObj.familyMembers;
-  console.log(familyArr);
-  familyArr.forEach((element) => {
-    const mailOptionsFeedback = {
-      from: "hcare.max.18@gmail.com", // sender address
-      to: element, // list of receivers
-      subject: "ProCare: Important update about your Patinet.", // Subject line
-      text: message,
-    };
-    transporter.sendMail(mailOptionsFeedback, (error, info) => {
-      if (error) {
-        return console.error(error);
-      }
-      console.log("Email sent: " + info.response);
-    });
+  console.log(message);
+  let familyMem = familyObj.familyMembers[0];
+  console.log(familyMem);
+  const mailOptionsFeedback = {
+    from: "hcare.max.18@gmail.com", // sender address
+    to: await getUserEmailByID(familyMem), // list of receivers
+    subject: "ProCare: Important update about your Patinet.", // Subject line
+    text: message,
+  };
+  transporter.sendMail(mailOptionsFeedback, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
   });
 };
 
@@ -120,4 +163,5 @@ module.exports = {
   registeredAlert,
   feedbackAlert,
   customizeAlert,
+  userTypeUpdateAlert,
 };

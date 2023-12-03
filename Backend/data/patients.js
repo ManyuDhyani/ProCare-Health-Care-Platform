@@ -1,8 +1,25 @@
 const mongoCollections = require("../Config/mongoCollections");
 const patients = mongoCollections.patients;
+const user_collection = mongoCollections.users;
 let { ObjectId } = require("mongodb");
 const automation = require("./automation");
-const usersData = require("./users");
+const user = require("./users");
+
+const nodemailer = require("nodemailer");
+const patientData = require("./patients");
+
+// Replace these values with your Gmail SMTP details
+const smtpConfig = {
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // set to true if using SSL
+  auth: {
+    user: "hcare.max.18@gmail.com",
+    pass: "pcqynippnjefmbur",
+  },
+};
+
+const transporter = nodemailer.createTransport(smtpConfig);
 
 //Create Function
 const createPatient = async (
@@ -100,6 +117,42 @@ const getPatientByStaffMember = async (StaffMemberID) => {
   return patientsWithStaffMember;
 };
 
+const temp = async () => {
+  console.log("Madarchot");
+};
+
+const getUserEmailByID = async (userId) => {
+  //email = email.trim();
+  console.log("Inside getUserEmailById", userId);
+  const userCollections = await user_collection();
+  console.log("getUserEmailById", 1);
+  let getEmailID = await userCollections.findOne({ _id: ObjectId(userId) });
+  console.log(getEmailID.email);
+  if (!getEmailID) {
+    throw { statusCode: 400, error: "No User Found" };
+  }
+  console.log("getUserEmailById", 2);
+  console.log(getEmailID);
+  return getEmailID.email;
+};
+
+const patientStatusAlert = async (emailId, status) => {
+  // Email config for status
+  const mailOptionsStatus = {
+    from: "hcare.max.18@gmail.com", // sender address
+    to: emailId, // list of receivers
+    subject: "ProCare: Patient Status - " + status, // Subject line
+  };
+
+  mailOptionsStatus.text = `Your patient is ${status}`;
+  transporter.sendMail(mailOptionsStatus, (error, info) => {
+    if (error) {
+      return console.error(error);
+    }
+    console.log("Email sent: " + info.response);
+  });
+};
+
 const updatePatient = async (
   patientId,
   name,
@@ -144,6 +197,13 @@ const updatePatient = async (
       { _id: ObjectId(patientId) }, // Assuming patientId is a MongoDB ObjectId
       { $set: newObj }
     );
+
+    //Send an email here
+    console.log("abababab");
+    let emailId = await getUserEmailByID(fectchObj.familyMembers[0]);
+    console.log("After abababab", emailId);
+    //let emailId = await usersData.getUserEmailByID(fectchObj.familyMembers[0]);
+    const xyz = await patientStatusAlert(emailId, status);
 
     if (result.modifiedCount === 1) {
       console.log(`Patient with ID ${patientId} successfully updated.`);
