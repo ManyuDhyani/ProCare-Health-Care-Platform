@@ -21,9 +21,9 @@ const minimumThreshold = 10;
 // Email configuration for inventory
 const mailOptions = {
   from: "hcare.max.18@gmail.com", // sender address
-  to: "manyudhyani@gmail.com", // list of receivers
+  to: "hcare.max.18@gmail.com", // list of receivers
   subject: "ProCare: Medication Stock Alert", // Subject line
-  text: `Medication stock is below the minimum threshold. Current stock: ${medicationStock}`,
+  text: `Medication stock is below the minimum threshold.`,
 };
 
 const inventoryAlert = async (medicationStock, minimumThreshold) => {
