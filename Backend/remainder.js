@@ -19,7 +19,7 @@ const sendHealthStatusEmail = (familyEmail, status) => {
   const mailOptions = {
     from: "hcare.max.18@gmail.com",
     to: familyEmail,
-    subject: `Patient Health Status Update, Status = ${status}`,
+    subject: `Patient Health Status Update`,
     text: `ProCare: Your patient is ${status}`,
   };
 
