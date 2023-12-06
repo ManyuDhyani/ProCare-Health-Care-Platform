@@ -145,11 +145,6 @@ const Login = () => {
               </Button>
               <Grid container>
                 <Grid item xs={6}>
-                  <Link href="/resetpass" variant="body2" className="Link">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item xs={6}>
                   <Link href="/registration" variant="body2" className="Link">
                     Do not have an account?
                   </Link>
