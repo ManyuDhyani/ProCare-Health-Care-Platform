@@ -460,6 +460,133 @@ const getLatestEvent = async () => {
 
 }
 
+//helps for username validations
+const getallUsers = async() => {
+    const usercollection = await users();
+    const getallusers = await usercollection.find({}).toArray();
+    // console.log(getallusers);
+    return getallusers;
+}
+
+const createUser = async(name, username, password) => {
+    // console.log("In createUser func");
+    const usercollection = await users();
+    
+    //Validations
+    if(!name || !username || !password) throw {statusCode: 400, error:'These fields cannot be empty'};
+    if(typeof(name) !== "string" || typeof(username) !== "string"|| typeof(password) !== "string") throw {statusCode: 400, error:'These fields should be strings'};
+    if(name.trim().length === 0 || username.trim().length === 0 || password.trim().length === 0) throw {statusCode: 400, error:"These fields cannot be empty"};
+    
+    let spChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    let num = /[0-9]/;
+    
+    //name validations
+    name = name.trim();
+    if(name.length === 0) throw {statusCode: 400, error:'Name cannot be empty'};
+    if(spChars.test(name) === true || num.test(name) === true) throw {statusCode: 400, error:"Name cannot contain special chars or numbers"};
+    let namearr = [];
+    namearr = name.split();
+    if(namearr.length > 2) throw {statusCode: 400, error:"Name format should be firstname lastname"};
+    for(let i = 0 ; i < namearr.length ; i++){
+        if(namearr[i].length<3) throw {statusCode: 400, error:"firstname and lastname should be more than 2 characters"};
+    }
+
+    //username validations
+    username = username.trim();
+    username = username.toLowerCase();
+    if(username.length<4) throw {statusCode: 400, error:"username should have atleast 4 characters"};
+    if(spChars.test(username) === true) throw {statusCode: 400, error:"username cannot have special characters"};
+    for(let i = 0 ; i < username.length ; i++){
+      if(username[i] === " ") throw {statusCode: 400, error:"username cannot have space"};
+    }
+
+    let allusers = await getallUsers();
+    if(allusers.length > 0 ){
+        for(let i = 0 ; i < allusers.length ; i++){
+            if(username.toLowerCase() === allusers[i].username.toLowerCase()) throw {statusCode: 400, error:"Username already exists"};
+        }
+    }
+    
+    //password validations
+    password = password.trim();
+    let reg1 = /[a-z]/;
+    let reg2 = /[A-Z]/;
+  
+    if(password.length<6) throw {statusCode: 400, error:"Password should be more than 6 characters"};
+    for(let i = 0; i < password.length; i++){
+      if(password[i] === " ") throw {statusCode: 400, error:"Password cannot have empty spaces"};
+    }
+    if(reg1.test(password) === false) throw {statusCode: 400, error:"no lower case"};
+    if(reg2.test(password) === false) throw {statusCode: 400, error:"no upper case"};
+    if(num.test(password) === false) throw {statusCode: 400, error:"no digit"};
+    if(spChars.test(password) === false) throw {statusCode: 400, error:"no special character"};
+    
+    password = await bcrypt.hash(password,16);
+
+    let newUser = {
+        name:name,
+        username:username,
+        password:password
+    }
+    const insertInfo = await usercollection.insertOne(newUser);
+    if(!insertInfo.acknowledged || !insertInfo.insertedId) throw {statusCode: 500, error:"Could not create user"};
+
+    const getuser = await usercollection.findOne({_id: insertInfo.insertedId});
+    getuser._id = getuser._id.toString();
+  
+    // return {insertedUser: true};
+    return getuser;
+};
+
+const loginUser = async (username, password) => {
+    if(!username || !password || typeof(username)!=="string" || typeof(password)!=="string") throw {statusCode: 400, error:"cannot be empty"};
+  
+    username = username.toLowerCase();
+    const userCollection = await users();
+    if(username.length<4) throw {statusCode: 400, error:"username should have atleast 4 characters"};
+    let spChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if(spChars.test(username) === true) throw {statusCode: 400, error:"username cannot have special characters"};
+  
+    for(let i = 0 ; i < username.length ; i++){
+      if(username[i] === " ") throw {statusCode: 400, error:"username cannot have space"};
+    }
+  
+    let reg1 = /[a-z]/;
+    let reg2 = /[A-Z]/;
+    let reg3 = /[0-9]/;
+    let reg4 = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+  
+    if(password.length<6) throw {statusCode: 400, error:"Password should be more than 6 characters"};
+    for(let i = 0; i < password.length; i++){
+      if(password[i] === " ") throw {statusCode: 400, error:"Password cannot have empty spaces"};
+    }
+    if(reg1.test(password) === false) throw {statusCode: 400, error:"no lower case"};
+    if(reg2.test(password) === false) throw {statusCode: 400, error:"no upper case"};
+    if(reg3.test(password) === false) throw {statusCode: 400, error:"no digit"};
+    if(reg4.test(password) === false) throw {statusCode: 400, error:"no special character"};
+  
+    username = username.toLowerCase();
+    const getuser = await userCollection.findOne({username: username});
+
+    let passCheck = false;
+    
+    if(getuser === null){
+        throw {statusCode: 403, error: "username or password is invalid"};
+    }
+    else {
+      let pass = getuser.password;
+      passCheck = await bcrypt.compare(password,pass);
+      if(passCheck === false) throw {statusCode: 403, error: "username or password is invalid"};
+    //   return {authenticatedUser: true};
+    return(getuser);
+    }
+  };
+
+module.exports={
+    getallUsers,
+    createUser,
+    loginUser,
+}
 module.exports = {
     createEvent,
     updateEvent,
