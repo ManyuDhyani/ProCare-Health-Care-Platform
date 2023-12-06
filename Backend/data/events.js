@@ -1,4 +1,4 @@
-const mongoCollections = require('../config/mongoCollections');
+const mongoCollections = require('../Config/mongoCollections');
 const validationFunctions = require('./validation');
 const event = mongoCollections.event;
 const { ObjectId } = require('mongodb');
@@ -221,3 +221,263 @@ const checkEventFollower = async(userId,eventId) =>{
     }
     return false;
 }
+
+
+//gettotalfollowers for the given eventId
+const getEventFollowersCounts = async (eventId) =>{
+    await validationFunctions.idValidator(eventId);
+    const eventCollections = await event();
+    let eventFetched = await eventCollections.findOne({_id: ObjectId(eventId)});
+    if(eventFetched === null)
+    {
+        throw {statusCode: 404, error: "Event does not exsist"};
+    }
+    let follow_arr = eventFetched.following;
+
+    let male_followers = 0;
+    let female_followers = 0;
+    let trans_followers = 0;
+    let nonbinary_followers = 0;
+    let unknown_followers = 0;
+
+    if(follow_arr.length===0)
+    {
+        return {male_followers:0,female_followers:0,trans_followers:0,nonbinary_followers:0,unknown_followers:0}
+    }
+
+    for(let i =0;i<follow_arr.length;i++)
+    {
+        let user = await profileData.getProfileById(follow_arr[i].toString());
+        if (!user)
+        {
+            unknown_followers++;
+        }
+        else if(user.gender==="Male")
+        {
+            male_followers++;
+        }
+        else if(user.gender==="Female")
+        {
+            female_followers++;
+        }
+        else if(user.gender==="Transgender")
+        {
+            trans_followers++;
+        }
+        else if(user.gender==="Non Binary")
+        {
+            nonbinary_followers++;
+        }
+        else if(!user || !user.gender || user.gender==="Unknown" || user.gender===null)
+        {
+            unknown_followers++;
+        }
+    }
+
+    return {male_followers:male_followers,female_followers:female_followers,trans_followers:trans_followers,nonbinary_followers:nonbinary_followers,unknown_followers:unknown_followers};
+}
+
+//gettotalattenders for the given eventId
+const getEventAttendersCounts = async (eventId) =>{
+    await validationFunctions.idValidator(eventId);
+    const eventCollections = await event();
+    let eventFetched = await eventCollections.findOne({_id: ObjectId(eventId)});
+    if(eventFetched === null)
+    {
+        throw {statusCode: 404, error: "Event does not exsist"};
+    }
+    let attend_arr = eventFetched.attending;
+
+    let male_attenders = 0;
+    let female_attenders = 0;
+    let trans_attenders = 0;
+    let nonbinary_attenders = 0;
+    let unknown_attenders = 0;
+
+    if(attend_arr.length===0)
+    {
+        return {male_attenders:0,female_attenders:0,trans_attenders:0,nonbinary_attenders:0,unknown_attenders:0}
+    }
+
+    for(let i =0;i<attend_arr.length;i++)
+    {
+        let user = await profileData.getProfileById(attend_arr[i].toString());
+        if (!user)
+        {
+            unknown_attenders++;
+        }
+        else if(user.gender==="Male")
+        {
+            male_attenders++;
+        }
+        else if(user.gender==="Female")
+        {
+            female_attenders++;
+        }
+        else if(user.gender==="Transgender")
+        {
+            trans_attenders++;
+        }
+        else if(user.gender==="Non Binary")
+        {
+            nonbinary_attenders++;
+        }
+        else if(user.gender==="Unknown")
+        {
+            unknown_attenders++;
+        }
+    }
+
+    return {male_attenders:male_attenders,female_attenders:female_attenders,trans_attenders:trans_attenders,nonbinary_attenders:nonbinary_attenders,unknown_attenders:unknown_attenders};
+}
+
+// check attender is present function
+const checkEventAttender = async(userId,eventId) =>{
+    validationFunctions.idValidator(userId);
+    validationFunctions.idValidator(eventId);
+    const eventCollections = await event();
+    let eventFetched = await eventCollections.findOne({_id: ObjectId(eventId)});
+    if(eventFetched === null)
+    {
+        throw {statusCode: 404, error: "Event does not exsist"};
+    }
+    let attending_arr = eventFetched.attending;
+    
+    for(let i=0;i<attending_arr.length;i++)
+    {
+        if(attending_arr[i].toString()===userId)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Get all events published by the users
+const getUsersEvents = async (userID) =>{
+    validationFunctions.idValidator(userID);
+    userID = userID.trim()
+
+    const eventCollections = await event();
+    const getEventInfo = await eventCollections.find({userId: ObjectId(userID)}, {projection: {title: 1, overview: 1, category: 1, thumbnail_1: 1, location: 1, price: 1, created: 1}}).sort({created: -1}).toArray();
+    return {eventCount: getEventInfo.length, events: getEventInfo};
+}
+
+// Get all events
+const getAllEvent = async () =>{
+    const eventCollections = await event();
+    let allEventsList = await eventCollections.find({}).toArray();
+    return allEventsList;
+}
+
+
+// Delete a particular Event
+const deleteEvent = async (eventId) => {
+    // validation
+    await validationFunctions.idValidator(eventId);
+
+    eventId = eventId.trim();
+
+    let eventCollections = await event();
+    let eventData = await eventCollections.findOne({_id: ObjectId(eventId)})
+    if (!eventData) {
+        throw {statusCode: 500, error: "Internal Server Error: The Event was not found in the Database"};
+    }
+
+    let deletedEvent = await eventCollections.deleteOne({_id: ObjectId(eventId)});
+    if (deletedEvent.deletedCount === 0) {
+        throw {statusCode: 500, error: "Internal Server Error: The Event could not be deleted"};
+    }
+
+    return {isDeleted: true};
+}
+
+
+//function to get sorted events based on  maximum likes
+const getEventwithMaxLikes = async () =>{
+   let allEvents = await getAllEvent();
+   let relative_likes = 0;
+   let newObj = {};
+   for(i=0;i<allEvents.length;i++)
+   {
+    let likes_dislikes = await likesData.getLikesDislikes(allEvents[i]._id.toString());
+    relative_likes = (likes_dislikes.like - likes_dislikes.dislike);
+    newObj[allEvents[i]._id.toString()] = relative_likes;
+   }
+ 
+   let sortable = [];
+    for (var event in newObj) {
+        sortable.push([event, newObj[event]]);
+    }
+
+    sortable.sort(function(a, b) {
+    return a[1] - b[1];
+    });
+
+    //getting top 4 events from bottom of this array
+    let trending =[];
+    count=0;
+    i=sortable.length-1;
+    while(i>=0)
+    {
+        if(count==5)
+        {
+            break;
+        }
+        let eventId = sortable[i][0];
+        let eventfetch = await getEventInfo(eventId);
+        trending.push(eventfetch);
+        i--;
+        count++;
+    }
+    
+   return trending;
+}
+
+const getEventsByTag = async (tag) => {
+    tag = tag.trim();
+    const eventCollections = await event();
+    let allEventsList = await eventCollections.find({}).toArray();
+    let neededEvents = [];
+    let index = 0;
+    
+    for(let i = 0 ; i < allEventsList.length; i++){
+        if(allEventsList[i].tags.includes(tag)){
+            neededEvents[index] = allEventsList[i];
+            index= index+1;
+        }
+    }
+    return (neededEvents);
+}
+
+const getLatestEvent = async () => {
+    const eventCollections = await event();
+    let allLatestEventsList = await eventCollections.find({}).sort({created: -1}).toArray();
+    if (allLatestEventsList.length === 0){
+        return {noEvents: true}
+    }
+    return allLatestEventsList;
+
+}
+
+module.exports = {
+    createEvent,
+    updateEvent,
+    getEventInfo,
+    getAttendees,
+    getEventFollowers,
+    getUsersEvents,
+    getAllEvent,
+    pushEventFollower,
+    removeEventFollower,
+    checkEventFollower,
+    pushEventAttender,
+    removeEventAttender,
+    checkEventAttender,
+    deleteEvent,
+    getEventsByTag,
+    getEventFollowersCounts,
+    getEventAttendersCounts,
+    getEventwithMaxLikes,
+    getLatestEvent
+};
