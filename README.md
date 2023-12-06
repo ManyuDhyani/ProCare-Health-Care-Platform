@@ -51,6 +51,19 @@ Main error can be related to library compatibility with node version. For that w
 
 ## Note: For now you have to assign 'F' and 'S' manually in MongoDB inside the field 'type' in the user collection, to test family and staff dashboards.
 
+### Step_3) Running the Test Case File for Sprint 4
+
+We create a file called "automationTest.js" in Test Folder of the root directory.
+
+Change to that folder: 
+>> cd .\Tests\  
+
+To run the file: First install nodemailer module.
+>> npm install nodemailer  
+
+Then run automationTest.js
+>> node automationTest.js  
+
 ## Database Schema for ProCare
 
 ![](database_Schema.png)
