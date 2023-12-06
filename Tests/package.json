@@ -10,6 +10,7 @@
     "author": "Team 18",
     "license": "ISC",
     "dependencies": {
-        "mongodb": "^4.17.1"
+        "mongodb": "^4.17.1",
+        "nodemailer": "^6.9.7"
     }
 }
