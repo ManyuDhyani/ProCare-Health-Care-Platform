@@ -66,4 +66,33 @@ Then run automationTest.js
 
 ## Database Schema for ProCare
 
-![](database_Schema.png)
+![](Readme_Images/database_Schema.png)
+
+## Product Demo Images
+There are 3 separate dashboards for admin, staff and family member of the patient, depending on the user types.
+### Admin Dashboard
+![](Readme_Images/Admin_Dashboard.png)
+### Staff Dashboard
+![](Readme_Images/Staff_Dashboard.png)
+### Family Dashboard
+![](Readme_Images/Family_Dashboard.png)
+
+There are various pop ups from where we can update Patient details, health status, medicine inventory, and other related fields. This can be done by either admin or staff.
+### Profile Update
+![](Readme_Images/UpdateProfile_PopUp.png)
+### Medicine inventory Stock Update
+![](Readme_Images/Update_Stock.png)
+### Health status Update
+![](Readme_Images/Update_Health_Status.png)
+
+### Allocating certain staff to a patient.
+![](Readme_Images/Allocate_Staff.png)
+
+### Adding new Inventory Stock or New Patient.
+![](Readme_Images/AddMedicine_PopUp.png)
+
+### Automated Email Notifications for stock alert, Successful Registration, Staff update, feedbacks, Patient health update, new staff Allocation, and 24 hours patient health.
+![](Readme_Images/UserRegistration_Activation_Email.png)
+![](Readme_Images/Stock_Threshold_Alert_Email.png)
+![](Readme_Images/Feedback_Alert_Email.png)
+![](Readme_Images/24Hours_HealthUpdate_Email.png)
